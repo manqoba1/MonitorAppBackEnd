@@ -39,7 +39,7 @@ import javax.validation.constraints.Size;
             query = "SELECT p FROM ProjectSite p WHERE p.activeFlag = :activeFlag")})
 public class ProjectSite implements Serializable {
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "projectSiteID")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "projectSite")
     private List<GcmDevice> gcmDeviceList;
     private static final long serialVersionUID = 1L;
     @Id

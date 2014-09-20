@@ -10,6 +10,7 @@ import com.boha.monitor.data.CompanyStaff;
 import com.boha.monitor.data.CompanyStaffType;
 import com.boha.monitor.data.ErrorStore;
 import com.boha.monitor.data.ErrorStoreAndroid;
+import com.boha.monitor.data.Executive;
 import com.boha.monitor.data.GcmDevice;
 import com.boha.monitor.data.Project;
 import com.boha.monitor.data.ProjectDiaryRecord;
@@ -29,6 +30,7 @@ import com.boha.monitor.dto.ProjectSiteDTO;
 import com.boha.monitor.dto.ProjectSiteStaffDTO;
 import com.boha.monitor.dto.ProjectSiteTaskDTO;
 import com.boha.monitor.dto.ProjectSiteTaskStatusDTO;
+import com.boha.monitor.dto.transfer.RequestDTO;
 import com.boha.monitor.dto.transfer.ResponseDTO;
 import java.util.ArrayList;
 import java.util.Date;
@@ -40,6 +42,7 @@ import javax.ejb.Stateless;
 import javax.ejb.TransactionManagement;
 import javax.ejb.TransactionManagementType;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import org.joda.time.DateTime;
@@ -54,6 +57,59 @@ public class DataUtil {
 
     @PersistenceContext
     EntityManager em;
+
+    public ResponseDTO login(GcmDeviceDTO device, String email,
+            String pin, Integer loginType, ListUtil listUtil) throws DataException {
+        ResponseDTO resp = new ResponseDTO();
+        Query q = null;
+
+        try {
+            switch (loginType) {
+                case RequestDTO.LOGIN_OFFICE_ADMIN:
+                    q = em.createNamedQuery("CompanyStaff.login", CompanyStaff.class);
+                    q.setParameter("email", email);
+                    q.setParameter("pin", pin);
+                    q.setMaxResults(1);
+                    CompanyStaff cs = (CompanyStaff) q.getSingleResult();
+                    resp.getCompanyStaffList().add(new CompanyStaffDTO(cs));
+                    device.setCompanyID(cs.getCompany().getCompanyID());
+                    device.setCompanyStaffID(cs.getCompanyStaffID());
+
+                    addDevice(device);
+                    break;
+                case RequestDTO.LOGIN_PROJECT_STAFF:
+                    q = em.createNamedQuery("ProjectSiteStaff.login", ProjectSiteStaff.class);
+                    q.setParameter("email", email);
+                    q.setParameter("pin", pin);
+                    q.setMaxResults(1);
+                    ProjectSiteStaff pss = (ProjectSiteStaff) q.getSingleResult();
+                    resp.getProjectSiteStaffList().add(new ProjectSiteStaffDTO(pss));
+                    resp.getCompanyStaffList().add(new CompanyStaffDTO(pss.getCompanyStaff()));
+
+                    device.setCompanyID(pss.getCompanyStaff().getCompany().getCompanyID());
+                    device.setCompanyStaffID(pss.getCompanyStaff().getCompanyStaffID());
+
+                    addDevice(device);
+                    break;
+                case RequestDTO.LOGIN_EXECUTIVE:
+                    q = em.createNamedQuery("Executive.login", Executive.class);
+                    q.setParameter("email", email);
+                    q.setParameter("pin", pin);
+                    q.setMaxResults(1);
+                    Executive ex = (Executive) q.getSingleResult();
+                    break;
+            }
+            resp.setCompanyStaffTypeList(listUtil.getCompanyStaffTypeList()
+                    .getCompanyStaffTypeList());
+            resp.setTaskStatusList(listUtil
+                    .getTaskStatusList().getTaskStatusList());
+
+        } catch (NoResultException e) {
+            resp.setStatusCode(301);
+            resp.setMessage("Email address or PIN are invalid. Please try again.");
+        }
+        return resp;
+    }
 
     public void addAndroidError(ErrorStoreAndroid err) throws DataException {
         try {
@@ -116,6 +172,7 @@ public class DataUtil {
             g.setProduct(d.getProduct());
 
             em.persist(g);
+            log.log(Level.WARNING, "New device loaded");
         } catch (Exception e) {
             log.log(Level.SEVERE, "Failed", e);
             throw new DataException("Failed");
@@ -238,11 +295,11 @@ public class DataUtil {
             q.setMaxResults(1);
             ps = (ProjectSiteStaff) q.getSingleResult();
             resp.getProjectSiteStaffList().add(new ProjectSiteStaffDTO(ps));
-             try {
+            try {
                 if (staff.getGcmDevice() != null) {
                     addDevice(staff.getGcmDevice());
                 }
-                
+
             } catch (DataException e) {
                 log.log(Level.WARNING, "Unable to add device to GCMDevice table", e);
             }
@@ -342,12 +399,12 @@ public class DataUtil {
             q.setMaxResults(1);
             cs = (CompanyStaff) q.getSingleResult();
             resp.getCompanyStaffList().add(new CompanyStaffDTO(cs));
-            
+
             try {
                 if (staff.getGcmDevice() != null) {
                     addDevice(staff.getGcmDevice());
                 }
-                
+
             } catch (DataException e) {
                 log.log(Level.WARNING, "Unable to add device to GCMDevice table", e);
             }
@@ -382,7 +439,7 @@ public class DataUtil {
             cs.setEmail(staff.getEmail());
             cs.setLastName(staff.getLastName());
             cs.setPin(staff.getPin());
-            cs.setCompanyStaffType(null);
+            cs.setCompanyStaffType(em.find(CompanyStaffType.class, 1));
             em.persist(cs);
 
             q = em.createNamedQuery("CompanyStaff.findByEmail", CompanyStaff.class);
@@ -423,6 +480,7 @@ public class DataUtil {
 
         return sb.toString();
     }
+
     private String getRandomPin() {
         StringBuilder sb = new StringBuilder();
         Random rand = new Random(System.currentTimeMillis());

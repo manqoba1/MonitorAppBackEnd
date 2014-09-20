@@ -37,7 +37,7 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "CompanyStaff.findByCompanyStaffID", 
             query = "SELECT c FROM CompanyStaff c WHERE c.companyStaffID = :companyStaffID"),
     @NamedQuery(name = "CompanyStaff.login", 
-            query = "SELECT c FROM CompanyStaff c WHERE c.email = :email and c."),
+            query = "SELECT c FROM CompanyStaff c WHERE c.email = :email and c.pin = :pin"),
     @NamedQuery(name = "CompanyStaff.findByLastName", query = "SELECT c FROM CompanyStaff c WHERE c.lastName = :lastName"),
     @NamedQuery(name = "CompanyStaff.findByEmail", query = "SELECT c FROM CompanyStaff c WHERE c.email = :email"),
     @NamedQuery(name = "CompanyStaff.findByCellphone", query = "SELECT c FROM CompanyStaff c WHERE c.cellphone = :cellphone")})

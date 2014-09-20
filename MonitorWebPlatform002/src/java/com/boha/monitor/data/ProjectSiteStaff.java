@@ -33,6 +33,8 @@ import javax.validation.constraints.NotNull;
 @Entity
 @Table(name = "projectSiteStaff")
 @NamedQueries({
+    @NamedQuery(name = "ProjectSiteStaff.login", 
+            query = "SELECT p FROM ProjectSiteStaff p where p.companyStaff.email = :email and p.pin = :pin"),
     @NamedQuery(name = "ProjectSiteStaff.findBySiteAndStaff", 
             query = "SELECT p FROM ProjectSiteStaff p "
                     + "where p.companyStaff.companyStaffID = :companyStaffID "

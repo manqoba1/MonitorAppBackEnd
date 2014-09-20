@@ -6,17 +6,21 @@
 package com.boha.monitor.util;
 
 import com.boha.monitor.data.CompanyStaff;
+import com.boha.monitor.data.CompanyStaffType;
 import com.boha.monitor.data.ProjectDiaryRecord;
 import com.boha.monitor.data.ProjectSite;
 import com.boha.monitor.data.ProjectSiteStaff;
 import com.boha.monitor.data.ProjectSiteTask;
 import com.boha.monitor.data.ProjectSiteTaskStatus;
+import com.boha.monitor.data.TaskStatus;
 import com.boha.monitor.dto.CompanyStaffDTO;
+import com.boha.monitor.dto.CompanyStaffTypeDTO;
 import com.boha.monitor.dto.ProjectDiaryRecordDTO;
 import com.boha.monitor.dto.ProjectSiteDTO;
 import com.boha.monitor.dto.ProjectSiteStaffDTO;
 import com.boha.monitor.dto.ProjectSiteTaskDTO;
 import com.boha.monitor.dto.ProjectSiteTaskStatusDTO;
+import com.boha.monitor.dto.TaskStatusDTO;
 import com.boha.monitor.dto.transfer.ResponseDTO;
 import java.util.List;
 import java.util.Objects;
@@ -51,6 +55,40 @@ public class ListUtil {
                 resp.getCompanyStaffList().add(new CompanyStaffDTO(cs));
             }
              log.log(Level.OFF, "company staff found: {0}", sList.size());       
+         } catch (Exception e) {
+            log.log(Level.SEVERE, "Failed", e);
+            throw new DataException("Failed to get project data\n" + getErrorString(e));
+        }
+
+        return resp;
+    }
+    public ResponseDTO getCompanyStaffTypeList() throws DataException {
+        ResponseDTO resp = new ResponseDTO();
+
+        try {
+            Query q = em.createNamedQuery("CompanyStaffType.findAll", CompanyStaffType.class);
+            List<CompanyStaffType> sList = q.getResultList();
+            for (CompanyStaffType cs : sList) {
+                resp.getCompanyStaffTypeList().add(new CompanyStaffTypeDTO(cs));
+            }
+             log.log(Level.OFF, "company staff types found: {0}", sList.size());       
+         } catch (Exception e) {
+            log.log(Level.SEVERE, "Failed", e);
+            throw new DataException("Failed to get project data\n" + getErrorString(e));
+        }
+
+        return resp;
+    }
+    public ResponseDTO getTaskStatusList() throws DataException {
+        ResponseDTO resp = new ResponseDTO();
+
+        try {
+            Query q = em.createNamedQuery("TaskStatus.findAll", TaskStatus.class);
+            List<TaskStatus> sList = q.getResultList();
+            for (TaskStatus cs : sList) {
+                resp.getTaskStatusList().add(new TaskStatusDTO(cs));
+            }
+             log.log(Level.OFF, "task status types found: {0}", sList.size());       
          } catch (Exception e) {
             log.log(Level.SEVERE, "Failed", e);
             throw new DataException("Failed to get project data\n" + getErrorString(e));
@@ -194,19 +232,7 @@ public class ListUtil {
         return resp;
     }
 
-    public ResponseDTO getTaskStatusList() throws DataException {
-        ResponseDTO resp = new ResponseDTO();
-
-        try {
-
-        } catch (Exception e) {
-
-            throw new DataException("Failed");
-        }
-
-        return resp;
-    }
-
+    
     public String getErrorString(Exception e) {
         StringBuilder sb = new StringBuilder();
         if (e.getMessage() != null) {

@@ -24,7 +24,8 @@ import java.io.Serializable;
  */
 public class RequestDTO implements Serializable{
     private Integer requestType, companyID, companyStaffID, projectID, 
-            projectSiteID;
+            projectSiteID, loginType;
+    private String email, pin;
     private CompanyDTO company;
     private CompanyStaffDTO companyStaff;
     private ProjectDTO project;
@@ -59,12 +60,45 @@ public class RequestDTO implements Serializable{
             GET_SITE_IMAGE_FILENAMES = 103,
             GET_TASK_IMAGE_FILENAMES = 104,
             GET_COMPANY_STAFF = 105,
-            GET_TASK_STATUS_LIST = 106;
+            GET_TASK_STATUS_LIST = 106,
+            GET_COMPANY_STAFF_TYPE_LIST = 107;
+    //login's 
+    public static final int 
+            LOGIN_OFFICE_ADMIN = 201,
+            LOGIN_EXECUTIVE = 202,
+            LOGIN_PROJECT_STAFF = 203;
 
     public static final String COMPANY_DIR = "company";
     public static final String PROJECT_DIR = "project";
     public static final String PROJECT_SITE_DIR = "projectsite";
     public static final String TASK_DIR = "task";
+
+    //
+    public Integer getLoginType() {
+        return loginType;
+    }
+
+    public void setLoginType(Integer loginType) {
+        this.loginType = loginType;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPin() {
+        return pin;
+    }
+
+    public void setPin(String pin) {
+        this.pin = pin;
+    }
+    
+    
     public Integer getRequestType() {
         return requestType;
     }
