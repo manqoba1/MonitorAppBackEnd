@@ -9,6 +9,8 @@ package com.boha.monitor.dto.transfer;
 import com.boha.monitor.dto.CompanyDTO;
 import com.boha.monitor.dto.CompanyStaffDTO;
 import com.boha.monitor.dto.CompanyStaffTypeDTO;
+import com.boha.monitor.dto.ErrorStoreAndroidDTO;
+import com.boha.monitor.dto.ErrorStoreDTO;
 import com.boha.monitor.dto.ProjectDTO;
 import com.boha.monitor.dto.ProjectDiaryRecordDTO;
 import com.boha.monitor.dto.ProjectSiteDTO;
@@ -28,6 +30,8 @@ public class ResponseDTO {
    
     private Integer statusCode;
     private String message, sessionID;
+    List<String> taskImageFileNameList;
+    List<String> siteImageFileNameList;
     List<TaskStatusDTO> taskStatusList = new ArrayList<>();
     List<ProjectStatusTypeDTO> projectStatusTypeList = new ArrayList<>();
     List<ProjectSiteDTO> projectSiteList = new ArrayList<>();
@@ -38,6 +42,8 @@ public class ResponseDTO {
     List<ProjectDiaryRecordDTO> projectDiaryRecordList = new ArrayList<>();
     List<ProjectSiteTaskDTO> projectSiteTaskList = new ArrayList<>();
     List<ProjectSiteTaskStatusDTO> projectSiteTaskStatusList = new ArrayList<>();
+    List<ErrorStoreDTO> errorStoreList = new ArrayList<>();
+    List<ErrorStoreAndroidDTO> errorStoreAndroidList = new ArrayList<>();
     //
     CompanyDTO company;
 
@@ -63,6 +69,38 @@ public class ResponseDTO {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public List<String> getTaskImageFileNameList() {
+        return taskImageFileNameList;
+    }
+
+    public void setTaskImageFileNameList(List<String> taskImageFileNameList) {
+        this.taskImageFileNameList = taskImageFileNameList;
+    }
+
+    public List<String> getSiteImageFileNameList() {
+        return siteImageFileNameList;
+    }
+
+    public void setSiteImageFileNameList(List<String> siteImageFileNameList) {
+        this.siteImageFileNameList = siteImageFileNameList;
+    }
+
+    public List<ErrorStoreDTO> getErrorStoreList() {
+        return errorStoreList;
+    }
+
+    public void setErrorStoreList(List<ErrorStoreDTO> errorStoreList) {
+        this.errorStoreList = errorStoreList;
+    }
+
+    public List<ErrorStoreAndroidDTO> getErrorStoreAndroidList() {
+        return errorStoreAndroidList;
+    }
+
+    public void setErrorStoreAndroidList(List<ErrorStoreAndroidDTO> errorStoreAndroidList) {
+        this.errorStoreAndroidList = errorStoreAndroidList;
     }
 
     

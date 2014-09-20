@@ -8,6 +8,8 @@ package com.boha.monitor.util;
 import com.boha.monitor.data.Company;
 import com.boha.monitor.data.CompanyStaff;
 import com.boha.monitor.data.CompanyStaffType;
+import com.boha.monitor.data.ErrorStore;
+import com.boha.monitor.data.ErrorStoreAndroid;
 import com.boha.monitor.data.Project;
 import com.boha.monitor.data.ProjectDiaryRecord;
 import com.boha.monitor.data.ProjectSite;
@@ -18,6 +20,7 @@ import com.boha.monitor.data.ProjectStatusType;
 import com.boha.monitor.data.TaskStatus;
 import com.boha.monitor.dto.CompanyDTO;
 import com.boha.monitor.dto.CompanyStaffDTO;
+import com.boha.monitor.dto.ErrorStoreDTO;
 import com.boha.monitor.dto.ProjectDTO;
 import com.boha.monitor.dto.ProjectDiaryRecordDTO;
 import com.boha.monitor.dto.ProjectSiteDTO;
@@ -25,6 +28,7 @@ import com.boha.monitor.dto.ProjectSiteStaffDTO;
 import com.boha.monitor.dto.ProjectSiteTaskDTO;
 import com.boha.monitor.dto.ProjectSiteTaskStatusDTO;
 import com.boha.monitor.dto.transfer.ResponseDTO;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
@@ -35,6 +39,7 @@ import javax.ejb.TransactionManagementType;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import org.joda.time.DateTime;
 
 /**
  *
@@ -47,18 +52,61 @@ public class DataUtil {
     @PersistenceContext
     EntityManager em;
 
+    public void addAndroidError(ErrorStoreAndroid err) throws DataException {
+        try {
+            em.persist(err);
+            log.log(Level.INFO, "Android error added");
+        } catch (Exception e) {
+            log.log(Level.SEVERE, "Failed to add Android Error", e);
+            throw new DataException("Failed to add Android Error\n"
+                    + getErrorString(e));
+        }
+    }
+
+    public ResponseDTO getServerErrors(
+            long startDate, long endDate) throws DataException {
+        ResponseDTO r = new ResponseDTO();
+        if (startDate == 0) {
+            DateTime ed = new DateTime();
+            DateTime sd = ed.minusMonths(3);
+            startDate = sd.getMillis();
+            endDate = ed.getMillis();
+        }
+        try {
+            Query q = em.createNamedQuery("ErrorStore.findByPeriod", ErrorStore.class);
+            q.setParameter("startDate", new Date(startDate));
+            q.setParameter("endDate", new Date(endDate));
+            List<ErrorStore> list = q.getResultList();
+            List<ErrorStoreDTO> dList = new ArrayList();
+            for (ErrorStore e : list) {
+                dList.add(new ErrorStoreDTO(e));
+            }
+            r.setErrorStoreList(dList);
+            log.log(Level.OFF, "Errors found {0}", r.getErrorStoreList().size());
+        } catch (Exception e) {
+            log.log(Level.SEVERE, "Failed to getServerErrors");
+            throw new DataException("Failed to getServerErrors\n"
+                    + getErrorString(e));
+        }
+        return r;
+    }
+
+    public Company getCompanyByID(Integer id) {
+        return em.find(Company.class, id);
+    }
+
     public ResponseDTO addProjectSiteTaskStatus(
             ProjectSiteTaskStatusDTO status) throws DataException {
         ResponseDTO resp = new ResponseDTO();
         try {
-            ProjectSiteTask c = em.find(ProjectSiteTask.class, 
+            ProjectSiteTask c = em.find(ProjectSiteTask.class,
                     status.getProjectSiteTaskID());
             ProjectSiteTaskStatus t = new ProjectSiteTaskStatus();
             t.setDateUpdated(new Date());
             t.setProjectSiteTask(c);
             t.setProjectSiteStaff(em.find(ProjectSiteStaff.class, status.getProjectSiteStaffID()));
             t.setTaskStatus(em.find(TaskStatus.class, status.getTaskStatus().getTaskStatusID()));
-            
+
             em.persist(t);
             Query q = em.createNamedQuery("ProjectSiteTaskStatus.findbyTask",
                     ProjectSiteTaskStatus.class);
@@ -67,7 +115,6 @@ public class DataUtil {
             for (ProjectSiteTaskStatus s : list) {
                 resp.getProjectSiteTaskStatusList().add(new ProjectSiteTaskStatusDTO(s));
             }
-            
 
             log.log(Level.OFF, "ProjectSiteTaskStatus added");
 
@@ -79,16 +126,17 @@ public class DataUtil {
         return resp;
 
     }
+
     public ResponseDTO addProjectDiaryRecord(
             ProjectDiaryRecordDTO diary) throws DataException {
         ResponseDTO resp = new ResponseDTO();
         try {
-            ProjectSiteStaff c = em.find(ProjectSiteStaff.class, 
+            ProjectSiteStaff c = em.find(ProjectSiteStaff.class,
                     diary.getProjectSiteStaff().getProjectSiteStaffID());
             ProjectDiaryRecord t = new ProjectDiaryRecord();
             t.setDiaryDate(new Date());
             t.setProjectSiteStaff(c);
-            t.setProjectStatusType(em.find(ProjectStatusType.class, 
+            t.setProjectStatusType(em.find(ProjectStatusType.class,
                     diary.getProjectStatusType().getProjectStatusTypeID()));
 
             em.persist(t);
@@ -99,7 +147,6 @@ public class DataUtil {
             for (ProjectDiaryRecord projectDiaryRecord : list) {
                 resp.getProjectDiaryRecordList().add(new ProjectDiaryRecordDTO(projectDiaryRecord));
             }
-            
 
             log.log(Level.OFF, "ProjectDiaryRecord added");
 
@@ -111,6 +158,7 @@ public class DataUtil {
         return resp;
 
     }
+
     public ResponseDTO addProjectSiteTask(
             ProjectSiteTaskDTO task) throws DataException {
         ResponseDTO resp = new ResponseDTO();
@@ -142,6 +190,7 @@ public class DataUtil {
         return resp;
 
     }
+
     public ResponseDTO registerProjectSiteStaff(
             ProjectSiteStaffDTO site) throws DataException {
         ResponseDTO resp = new ResponseDTO();
@@ -305,5 +354,26 @@ public class DataUtil {
 
     }
 
+    public String getErrorString(Exception e) {
+        StringBuilder sb = new StringBuilder();
+        if (e.getMessage() != null) {
+            sb.append(e.getMessage()).append("\n\n");
+        }
+        if (e.toString() != null) {
+            sb.append(e.toString()).append("\n\n");
+        }
+        StackTraceElement[] s = e.getStackTrace();
+        if (s.length > 0) {
+            StackTraceElement ss = s[0];
+            String method = ss.getMethodName();
+            String cls = ss.getClassName();
+            int line = ss.getLineNumber();
+            sb.append("Class: ").append(cls).append("\n");
+            sb.append("Method: ").append(method).append("\n");
+            sb.append("Line Number: ").append(line).append("\n");
+        }
+
+        return sb.toString();
+    }
     static final Logger log = Logger.getLogger(DataUtil.class.getSimpleName());
 }

@@ -3,18 +3,22 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package com.boha.monitor.dto;
 
+import com.boha.monitor.data.Project;
 import com.boha.monitor.data.ProjectSiteTask;
+import com.boha.monitor.util.FileUtility;
 import java.io.Serializable;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  * @author aubreyM
  */
 public class ProjectSiteTaskDTO implements Serializable {
+
     private static final long serialVersionUID = 1L;
     private Integer projectSiteTaskID;
     private String taskName;
@@ -22,6 +26,7 @@ public class ProjectSiteTaskDTO implements Serializable {
     private long dateRegistered;
     private Integer projectSiteID;
     private List<ProjectSiteTaskStatusDTO> projectSiteTaskStatusList;
+    private List<String> imageFileNameList;
 
     public ProjectSiteTaskDTO() {
     }
@@ -31,9 +36,14 @@ public class ProjectSiteTaskDTO implements Serializable {
         this.taskName = a.getTaskName();
         this.taskDescription = a.getTaskDescription();
         this.dateRegistered = a.getDateRegistered().getTime();
+        Project p = a.getProjectSite().getProject();
+        try {
+            this.imageFileNameList = FileUtility.getImageFilesTask(p.getCompany().getCompanyID(),
+                    p.getProjectID(), a.getProjectSite().getProjectSiteID(), projectSiteTaskID);
+        } catch (Exception ex) {
+            Logger.getLogger(ProjectSiteTaskDTO.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
-
-    
 
     public Integer getProjectSiteTaskID() {
         return projectSiteTaskID;
@@ -49,6 +59,14 @@ public class ProjectSiteTaskDTO implements Serializable {
 
     public void setTaskName(String taskName) {
         this.taskName = taskName;
+    }
+
+    public List<String> getImageFileNameList() {
+        return imageFileNameList;
+    }
+
+    public void setImageFileNameList(List<String> imageFileNameList) {
+        this.imageFileNameList = imageFileNameList;
     }
 
     public String getTaskDescription() {
@@ -74,8 +92,6 @@ public class ProjectSiteTaskDTO implements Serializable {
     public void setProjectSiteID(Integer projectSiteID) {
         this.projectSiteID = projectSiteID;
     }
-
-
 
     public List<ProjectSiteTaskStatusDTO> getProjectSiteTaskStatusList() {
         return projectSiteTaskStatusList;
@@ -109,5 +125,5 @@ public class ProjectSiteTaskDTO implements Serializable {
     public String toString() {
         return "com.boha.monitor.data.ProjectSiteTask[ projectSiteTaskID=" + projectSiteTaskID + " ]";
     }
-    
+
 }

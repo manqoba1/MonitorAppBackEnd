@@ -38,6 +38,8 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "CompanyStaff.findByEmail", query = "SELECT c FROM CompanyStaff c WHERE c.email = :email"),
     @NamedQuery(name = "CompanyStaff.findByCellphone", query = "SELECT c FROM CompanyStaff c WHERE c.cellphone = :cellphone")})
 public class CompanyStaff implements Serializable {
+    @OneToMany(mappedBy = "companyStaff")
+    private List<GcmDevice> gcmDeviceList;
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -172,6 +174,14 @@ public class CompanyStaff implements Serializable {
     @Override
     public String toString() {
         return "com.boha.monitor.data.CompanyStaff[ companyStaffID=" + companyStaffID + " ]";
+    }
+
+    public List<GcmDevice> getGcmDeviceList() {
+        return gcmDeviceList;
+    }
+
+    public void setGcmDeviceList(List<GcmDevice> gcmDeviceList) {
+        this.gcmDeviceList = gcmDeviceList;
     }
     
 }

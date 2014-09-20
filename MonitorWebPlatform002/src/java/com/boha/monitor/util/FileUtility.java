@@ -8,8 +8,13 @@ package com.boha.monitor.util;
  *
  * @author aubreymalabie
  */
+import com.boha.monitor.dto.transfer.RequestDTO;
+import com.boha.monitor.gate.PhotoServlet;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -31,71 +36,69 @@ public class FileUtility {
         }
         return file;
     }
-//
-//    public static List<String> getImageFilesTournament(int golfGroupID, int tournamentID, int type) throws Exception {
-//        logger.log(Level.OFF, "golfGroup: {0} tournament: {1} type: {2}", new Object[]{golfGroupID, tournamentID, 2});
-//        List<String> list = new ArrayList<>();
-//        File rootDir = GolfProperties.getImageDir();
-//        File ggRoot = new File(rootDir, PhotoServlet.GOLF_GROUP_PREFIX + golfGroupID);
-//
-//        File dir = null;
-//        switch (type) {
-//            case RequestDTO.PICTURES_FULL_SIZE:
-//                dir = new File(ggRoot, PhotoServlet.TOURNAMENT_PREFIX + tournamentID);
-//                if (!dir.exists()) {
-//                    return list;
-//                }
-//                if (dir.exists()) {
-//                    File[] files = dir.listFiles();
-//                    for (File file : files) {
-//                        if (file.getName().contains("f")) {
-//                            list.add(file.getName());
-//                        }
-//                    }
-//                }
-//                Collections.reverse(list);
-//                logger.log(Level.OFF, "full size dir: {0}", dir.getAbsolutePath());
-//                break;
-//            case RequestDTO.PICTURES_THUMBNAILS:
-//                File tournDir = new File(ggRoot, PhotoServlet.TOURNAMENT_PREFIX + tournamentID);
-//                dir = tournDir; //new File(tournDir, PhotoServlet.THUMB_PREFIX + tournamentID);
-//                logger.log(Level.OFF, "thumb dir: {0}", dir.getAbsolutePath());
-//                if (dir.exists()) {
-//                    File[] files = dir.listFiles();
-//                    for (File file : files) {
-//                        if (file.getName().contains("t")) {
-//                            list.add(file.getName());
-//                        }
-//                    }
-//                }
-//                Collections.reverse(list);
-//                break;
-//        }
-//
-//        logger.log(Level.OFF, "######## Image files found: {0}", list.size());
-//        return list;
-//    }
-//
-//    public static List<String> getImageFilesGolfGroup(int golfGroupID, int type) throws Exception {
-//        List<String> list = new ArrayList<>();
-//        File rootDir = GolfProperties.getImageDir();
-//        File dir = null;
-//        switch (type) {
-//            case RequestDTO.PICTURES_FULL_SIZE:
-//                dir = new File(rootDir, PhotoServlet.GOLF_GROUP_PREFIX + golfGroupID);
-//                break;
-//            case RequestDTO.PICTURES_THUMBNAILS:
-//                dir = new File(rootDir, PhotoServlet.THUMB_PREFIX + golfGroupID);
-//                break;
-//        }
-//        if (dir.exists()) {
-//            File[] files = dir.listFiles();
-//            for (File file : files) {
-//                list.add(file.getName());
-//            }
-//        }
-//        logger.log(Level.OFF, "Image files found: {0}", list.size());
-//        return list;
-//    }
+    
+    public static List<String> getImageFilesTask(int companyID, int projectID, int projectSiteID,
+            int projectSiteTaskID) throws Exception {
+        List<String> list = new ArrayList<>();
+        File rootDir = MonitorProperties.getImageDir();
+        File ggRoot = new File(rootDir, RequestDTO.COMPANY_DIR + companyID);
+        File dir = null;
+
+        dir = new File(ggRoot, RequestDTO.PROJECT_DIR + projectID);
+        if (!dir.exists()) {
+            return list;
+        }
+
+        File site = new File(dir, RequestDTO.PROJECT_SITE_DIR + projectSiteID);
+        if (!site.exists()) {
+            return list;
+        }
+        File target = new File(site, RequestDTO.TASK_DIR + projectSiteTaskID);
+        if (!target.exists()) {
+            return list;
+        }
+        File[] files = target.listFiles();
+        for (File file : files) {
+            if (file.isDirectory()) {
+                continue;
+            }
+            list.add(file.getName());
+        }
+
+        Collections.reverse(list);
+        logger.log(Level.OFF, "site image dir: {0}", dir.getAbsolutePath());
+
+        return list;
+    }
+
+    public static List<String> getImageFilesSite(int companyID, int projectID, int projectSiteID) throws Exception {
+        List<String> list = new ArrayList<>();
+        File rootDir = MonitorProperties.getImageDir();
+        File ggRoot = new File(rootDir, RequestDTO.COMPANY_DIR + companyID);
+        File dir = null;
+
+        dir = new File(ggRoot, RequestDTO.PROJECT_DIR + projectID);
+        if (!dir.exists()) {
+            return list;
+        }
+
+        File target = new File(dir, RequestDTO.PROJECT_SITE_DIR + projectSiteID);
+        if (!target.exists()) {
+            return list;
+        }
+        File[] files = target.listFiles();
+        for (File file : files) {
+            if (file.isDirectory()) {
+                continue;
+            }
+            list.add(file.getName());
+        }
+
+        Collections.reverse(list);
+        logger.log(Level.OFF, "site image dir: {0}", dir.getAbsolutePath());
+
+        return list;
+    }
+
 
 }

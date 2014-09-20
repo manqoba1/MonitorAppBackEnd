@@ -6,9 +6,13 @@
 
 package com.boha.monitor.dto;
 
+import com.boha.monitor.data.Project;
 import com.boha.monitor.data.ProjectSite;
+import com.boha.monitor.util.FileUtility;
 import java.io.Serializable;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -24,6 +28,7 @@ public class ProjectSiteDTO implements Serializable {
     private List<ProjectSiteTaskDTO> projectSiteTaskList;
     private Integer projectID;
     private List<ProjectSiteStaffDTO> projectSiteStaffList;
+    private List<String> imageFileNameList;
 
     public ProjectSiteDTO() {
     }
@@ -35,6 +40,14 @@ public class ProjectSiteDTO implements Serializable {
         this.longitude = a.getLongitude();
         this.activeFlag = a.getActiveFlag();
         this.projectID = a.getProject().getProjectID();
+        
+        Project p = a.getProject();
+        try {
+            this.imageFileNameList = FileUtility.getImageFilesSite(p.getCompany().getCompanyID(),
+                    p.getProjectID(), a.getProjectSiteID());
+        } catch (Exception ex) {
+            Logger.getLogger(ProjectSiteTaskDTO.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     public Integer getProjectSiteID() {
@@ -51,6 +64,14 @@ public class ProjectSiteDTO implements Serializable {
 
     public void setProjectSiteName(String projectSiteName) {
         this.projectSiteName = projectSiteName;
+    }
+
+    public List<String> getImageFileNameList() {
+        return imageFileNameList;
+    }
+
+    public void setImageFileNameList(List<String> imageFileNameList) {
+        this.imageFileNameList = imageFileNameList;
     }
 
     public Double getLatitude() {

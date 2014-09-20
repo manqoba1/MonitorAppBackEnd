@@ -59,6 +59,10 @@ public class RequestDTO implements Serializable{
             GET_COMPANY_DATA = 105,
             GET_TASK_STATUS_LIST = 106;
 
+    public static final String COMPANY_DIR = "company";
+    public static final String PROJECT_DIR = "project";
+    public static final String PROJECT_SITE_DIR = "projectsite";
+    public static final String TASK_DIR = "task";
     public Integer getRequestType() {
         return requestType;
     }

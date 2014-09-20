@@ -35,6 +35,8 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "Company.findByCompanyName", 
             query = "SELECT c FROM Company c WHERE c.companyName = :companyName")})
 public class Company implements Serializable {
+    @OneToMany(mappedBy = "company")
+    private List<ErrorStoreAndroid> errorStoreAndroidList;
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -121,6 +123,14 @@ public class Company implements Serializable {
     @Override
     public String toString() {
         return "com.boha.monitor.data.Company[ companyID=" + companyID + " ]";
+    }
+
+    public List<ErrorStoreAndroid> getErrorStoreAndroidList() {
+        return errorStoreAndroidList;
+    }
+
+    public void setErrorStoreAndroidList(List<ErrorStoreAndroid> errorStoreAndroidList) {
+        this.errorStoreAndroidList = errorStoreAndroidList;
     }
     
 }
