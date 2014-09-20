@@ -16,12 +16,14 @@ import java.util.List;
  */
 public class ProjectSiteStaffDTO implements Serializable {
     private static final long serialVersionUID = 1L;
-    private Integer projectSiteStaffID;
+    private Integer projectSiteStaffID, activeFlag;
     private long dateRegistered;
     private List<ProjectDiaryRecordDTO> projectDiaryRecordList;
     private List<ProjectSiteTaskStatusDTO> projectSiteTaskStatusList;
     private Integer projectSiteID;
     private Integer companyStaffID;
+    private GcmDeviceDTO gcmDevice;
+    
 
     public ProjectSiteStaffDTO() {
     }
@@ -30,11 +32,27 @@ public class ProjectSiteStaffDTO implements Serializable {
         this.projectSiteStaffID = projectSiteStaffID;
     }
 
+    public Integer getActiveFlag() {
+        return activeFlag;
+    }
+
+    public void setActiveFlag(Integer activeFlag) {
+        this.activeFlag = activeFlag;
+    }
+
     public ProjectSiteStaffDTO(ProjectSiteStaff a) {
         this.dateRegistered = a.getDateRegistered().getTime();
         this.projectSiteStaffID = a.getProjectSiteStaffID();
         this.projectSiteID = a.getProjectSite().getProjectSiteID();
         this.companyStaffID = a.getCompanyStaff().getCompanyStaffID();
+    }
+
+    public GcmDeviceDTO getGcmDevice() {
+        return gcmDevice;
+    }
+
+    public void setGcmDevice(GcmDeviceDTO gcmDevice) {
+        this.gcmDevice = gcmDevice;
     }
 
     public Integer getProjectSiteStaffID() {

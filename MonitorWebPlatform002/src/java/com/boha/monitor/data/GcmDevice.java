@@ -32,15 +32,28 @@ import javax.validation.constraints.Size;
 @Entity
 @Table(name = "gcmDevice")
 @NamedQueries({
-    @NamedQuery(name = "GcmDevice.findAll", query = "SELECT g FROM GcmDevice g"),
-    @NamedQuery(name = "GcmDevice.findByGcmDeviceID", query = "SELECT g FROM GcmDevice g WHERE g.gcmDeviceID = :gcmDeviceID"),
-    @NamedQuery(name = "GcmDevice.findByManufacturer", query = "SELECT g FROM GcmDevice g WHERE g.manufacturer = :manufacturer"),
-    @NamedQuery(name = "GcmDevice.findByModel", query = "SELECT g FROM GcmDevice g WHERE g.model = :model"),
-    @NamedQuery(name = "GcmDevice.findByProduct", query = "SELECT g FROM GcmDevice g WHERE g.product = :product"),
+    @NamedQuery(name = "GcmDevice.findByProjectSite", 
+            query = "SELECT g FROM GcmDevice g where g.projectSite.projectSiteID = :projectSiteID order by g.gcmDeviceID desc"),
+    @NamedQuery(name = "GcmDevice.findByCompany", 
+            query = "SELECT g FROM GcmDevice g WHERE g.company.companyID = :companyID order by g.gcmDeviceID desc"),
+    @NamedQuery(name = "GcmDevice.findByManufacturer", 
+            query = "SELECT g FROM GcmDevice g WHERE g.manufacturer = :manufacturer"),
+    @NamedQuery(name = "GcmDevice.findByModel", 
+            query = "SELECT g FROM GcmDevice g WHERE g.model = :model"),
+    @NamedQuery(name = "GcmDevice.findByProjectStaff", 
+            query = "SELECT g FROM GcmDevice g WHERE g.companyStaff.companyStaffID = :companyStaffID order by g.gcmDeviceID desc"),
     @NamedQuery(name = "GcmDevice.findByMessageCount", query = "SELECT g FROM GcmDevice g WHERE g.messageCount = :messageCount"),
-    @NamedQuery(name = "GcmDevice.findByDateRegistered", query = "SELECT g FROM GcmDevice g WHERE g.dateRegistered = :dateRegistered"),
-    @NamedQuery(name = "GcmDevice.findBySerialNumber", query = "SELECT g FROM GcmDevice g WHERE g.serialNumber = :serialNumber")})
+    @NamedQuery(name = "GcmDevice.findByProject", 
+            query = "SELECT g FROM GcmDevice g WHERE g.projectSite.project.projectID = :projectID"),
+    @NamedQuery(name = "GcmDevice.findBySerialNumber", 
+            query = "SELECT g FROM GcmDevice g WHERE g.serialNumber = :serialNumber")})
 public class GcmDevice implements Serializable {
+    @JoinColumn(name = "companyID", referencedColumnName = "companyID")
+    @ManyToOne(optional = false)
+    private Company company;
+    @JoinColumn(name = "projectSiteID", referencedColumnName = "projectSiteID")
+    @ManyToOne(optional = false)
+    private ProjectSite projectSite;
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -186,5 +199,22 @@ public class GcmDevice implements Serializable {
     public String toString() {
         return "com.boha.monitor.data.GcmDevice[ gcmDeviceID=" + gcmDeviceID + " ]";
     }
+
+    public Company getCompany() {
+        return company;
+    }
+
+    public void setCompany(Company company) {
+        this.company = company;
+    }
+
+    public ProjectSite getProjectSite() {
+        return projectSite;
+    }
+
+    public void setProjectSite(ProjectSite projectSite) {
+        this.projectSite = projectSite;
+    }
+
     
 }

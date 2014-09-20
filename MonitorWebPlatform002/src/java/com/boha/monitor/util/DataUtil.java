@@ -10,6 +10,7 @@ import com.boha.monitor.data.CompanyStaff;
 import com.boha.monitor.data.CompanyStaffType;
 import com.boha.monitor.data.ErrorStore;
 import com.boha.monitor.data.ErrorStoreAndroid;
+import com.boha.monitor.data.GcmDevice;
 import com.boha.monitor.data.Project;
 import com.boha.monitor.data.ProjectDiaryRecord;
 import com.boha.monitor.data.ProjectSite;
@@ -21,6 +22,7 @@ import com.boha.monitor.data.TaskStatus;
 import com.boha.monitor.dto.CompanyDTO;
 import com.boha.monitor.dto.CompanyStaffDTO;
 import com.boha.monitor.dto.ErrorStoreDTO;
+import com.boha.monitor.dto.GcmDeviceDTO;
 import com.boha.monitor.dto.ProjectDTO;
 import com.boha.monitor.dto.ProjectDiaryRecordDTO;
 import com.boha.monitor.dto.ProjectSiteDTO;
@@ -93,6 +95,31 @@ public class DataUtil {
 
     public Company getCompanyByID(Integer id) {
         return em.find(Company.class, id);
+    }
+
+    public void addDevice(GcmDeviceDTO d) throws DataException {
+        try {
+            GcmDevice g = new GcmDevice();
+            g.setCompany(em.find(Company.class, d.getCompanyID()));
+            g.setCompanyStaff(em.find(CompanyStaff.class, d.getCompanyStaffID()));
+            if (d.getProjectSiteID() != null
+                    && d.getProjectSiteID() > 0) {
+                g.setProjectSite(em.find(ProjectSite.class, d.getProjectSiteID()));
+            }
+            g.setDateRegistered(new Date());
+            g.setManufacturer(d.getManufacturer());
+            g.setMessageCount(0);
+            g.setModel(d.getModel());
+            g.setRegistrationID(d.getRegistrationID());
+            g.setSerialNumber(d.getSerialNumber());
+            g.setProduct(d.getProduct());
+
+            em.persist(g);
+        } catch (Exception e) {
+            log.log(Level.SEVERE, "Failed", e);
+            throw new DataException("Failed");
+
+        }
     }
 
     public ResponseDTO addProjectSiteTaskStatus(
@@ -192,23 +219,31 @@ public class DataUtil {
     }
 
     public ResponseDTO registerProjectSiteStaff(
-            ProjectSiteStaffDTO site) throws DataException {
+            ProjectSiteStaffDTO staff) throws DataException {
         ResponseDTO resp = new ResponseDTO();
         try {
-            ProjectSite c = em.find(ProjectSite.class, site.getProjectSiteID());
+            ProjectSite c = em.find(ProjectSite.class, staff.getProjectSiteID());
             ProjectSiteStaff ps = new ProjectSiteStaff();
-            ps.setCompanyStaff(em.find(CompanyStaff.class, site.getCompanyStaffID()));
+            ps.setCompanyStaff(em.find(CompanyStaff.class, staff.getCompanyStaffID()));
             ps.setDateRegistered(new Date());
             ps.setProjectSite(c);
 
             em.persist(ps);
             Query q = em.createNamedQuery("ProjectSiteStaff.findBySiteAndStaff",
                     ProjectSiteStaff.class);
-            q.setParameter("companyStaffID", site.getCompanyStaffID());
-            q.setParameter("projectSiteID", site.getProjectSiteID());
+            q.setParameter("companyStaffID", staff.getCompanyStaffID());
+            q.setParameter("projectSiteID", staff.getProjectSiteID());
             q.setMaxResults(1);
             ps = (ProjectSiteStaff) q.getSingleResult();
             resp.getProjectSiteStaffList().add(new ProjectSiteStaffDTO(ps));
+             try {
+                if (staff.getGcmDevice() != null) {
+                    addDevice(staff.getGcmDevice());
+                }
+                
+            } catch (DataException e) {
+                log.log(Level.WARNING, "Unable to add device to GCMDevice table", e);
+            }
 
             log.log(Level.OFF, "Project site staff registered for: {0} ",
                     new Object[]{c.getProjectSiteName()});
@@ -304,6 +339,15 @@ public class DataUtil {
             q.setMaxResults(1);
             cs = (CompanyStaff) q.getSingleResult();
             resp.getCompanyStaffList().add(new CompanyStaffDTO(cs));
+            
+            try {
+                if (staff.getGcmDevice() != null) {
+                    addDevice(staff.getGcmDevice());
+                }
+                
+            } catch (DataException e) {
+                log.log(Level.WARNING, "Unable to add device to GCMDevice table", e);
+            }
 
             log.log(Level.OFF, "Company staff registered for: {0} - {1} {2}",
                     new Object[]{c.getCompanyName(), staff.getFirstName(), staff.getLastName()});

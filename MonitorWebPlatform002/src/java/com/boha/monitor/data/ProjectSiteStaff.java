@@ -44,6 +44,9 @@ public class ProjectSiteStaff implements Serializable {
     @Basic(optional = false)
     @Column(name = "projectSiteStaffID")
     private Integer projectSiteStaffID;
+    @Column(name = "activeFlag")
+    private Integer activeFlag;
+    
     @Basic(optional = false)
     @NotNull
     @Column(name = "dateRegistered")
@@ -86,6 +89,14 @@ public class ProjectSiteStaff implements Serializable {
 
     public void setDateRegistered(Date dateRegistered) {
         this.dateRegistered = dateRegistered;
+    }
+
+    public Integer getActiveFlag() {
+        return activeFlag;
+    }
+
+    public void setActiveFlag(Integer activeFlag) {
+        this.activeFlag = activeFlag;
     }
 
     public List<ProjectDiaryRecord> getProjectDiaryRecordList() {

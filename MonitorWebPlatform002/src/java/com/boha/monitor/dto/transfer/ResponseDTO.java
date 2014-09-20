@@ -29,7 +29,7 @@ import java.util.List;
 public class ResponseDTO {
    
     private Integer statusCode;
-    private String message, sessionID;
+    private String message, sessionID, GCMRegistrationID;
     List<String> taskImageFileNameList;
     List<String> siteImageFileNameList;
     List<TaskStatusDTO> taskStatusList = new ArrayList<>();
@@ -46,6 +46,14 @@ public class ResponseDTO {
     List<ErrorStoreAndroidDTO> errorStoreAndroidList = new ArrayList<>();
     //
     CompanyDTO company;
+
+    public String getGCMRegistrationID() {
+        return GCMRegistrationID;
+    }
+
+    public void setGCMRegistrationID(String GCMRegistrationID) {
+        this.GCMRegistrationID = GCMRegistrationID;
+    }
 
     public Integer getStatusCode() {
         return statusCode;

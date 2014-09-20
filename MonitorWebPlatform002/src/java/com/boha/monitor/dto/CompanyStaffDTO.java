@@ -16,7 +16,7 @@ import java.util.List;
  */
 public class CompanyStaffDTO implements Serializable {
     private static final long serialVersionUID = 1L;
-    private Integer companyStaffID;
+    private Integer companyStaffID, activeFlag;
     private String firstName;
     private String lastName;
     private String email;
@@ -24,6 +24,7 @@ public class CompanyStaffDTO implements Serializable {
     private CompanyStaffTypeDTO companyStaffType;
     private Integer companyID;
     private List<ProjectSiteStaffDTO> projectSiteStaffList;
+    private GcmDeviceDTO gcmDevice;
 
     public CompanyStaffDTO() {
     }
@@ -36,6 +37,7 @@ public class CompanyStaffDTO implements Serializable {
         this.cellphone = a.getCellphone();
         this.companyStaffType = new CompanyStaffTypeDTO(a.getCompanyStaffType());
         this.companyID = a.getCompany().getCompanyID();
+        this.activeFlag = a.getActiveFlag();
         
     }
 
@@ -46,6 +48,15 @@ public class CompanyStaffDTO implements Serializable {
     public void setCompanyStaffID(Integer companyStaffID) {
         this.companyStaffID = companyStaffID;
     }
+
+    public GcmDeviceDTO getGcmDevice() {
+        return gcmDevice;
+    }
+
+    public void setGcmDevice(GcmDeviceDTO gcmDevice) {
+        this.gcmDevice = gcmDevice;
+    }
+    
 
     public String getFirstName() {
         return firstName;

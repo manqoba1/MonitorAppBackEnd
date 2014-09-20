@@ -13,15 +13,15 @@ import com.boha.monitor.data.GcmDevice;
  */
 public class GcmDeviceDTO {
 
-    private int gcmDeviceID;
+    private Integer gcmDeviceID;
     private String registrationID;
     private String manufacturer;
     private String model;
     private String product;
-    private int messageCount;
+    private Integer messageCount;
     private long dateRegistered;
     private String serialNumber;
-    private int companyStaffID;
+    private Integer companyStaffID, companyID, projectSiteID;
    
     
     public GcmDeviceDTO(GcmDevice a) {
@@ -36,14 +36,36 @@ public class GcmDeviceDTO {
         if (a.getCompanyStaff()!= null) {
             companyStaffID = a.getCompanyStaff().getCompanyStaffID();
         }
+        if (a.getCompany() != null) {
+            companyID = a.getCompany().getCompanyID();
+        }
+        if (a.getProjectSite() != null) {
+            projectSiteID = a.getProjectSite().getProjectSiteID();
+        }
         
     }
 
-    public int getGcmDeviceID() {
+    public Integer getCompanyID() {
+        return companyID;
+    }
+
+    public void setCompanyID(Integer companyID) {
+        this.companyID = companyID;
+    }
+
+    public Integer getProjectSiteID() {
+        return projectSiteID;
+    }
+
+    public void setProjectSiteID(Integer projectSiteID) {
+        this.projectSiteID = projectSiteID;
+    }
+
+    public Integer getGcmDeviceID() {
         return gcmDeviceID;
     }
 
-    public void setGcmDeviceID(int gcmDeviceID) {
+    public void setGcmDeviceID(Integer gcmDeviceID) {
         this.gcmDeviceID = gcmDeviceID;
     }
 
@@ -79,11 +101,11 @@ public class GcmDeviceDTO {
         this.product = product;
     }
 
-    public int getMessageCount() {
+    public Integer getMessageCount() {
         return messageCount;
     }
 
-    public void setMessageCount(int messageCount) {
+    public void setMessageCount(Integer messageCount) {
         this.messageCount = messageCount;
     }
 
@@ -103,11 +125,11 @@ public class GcmDeviceDTO {
         this.serialNumber = serialNumber;
     }
 
-    public int getCompanyStaffID() {
+    public Integer getCompanyStaffID() {
         return companyStaffID;
     }
 
-    public void setCompanyStaffID(int companyStaffID) {
+    public void setCompanyStaffID(Integer companyStaffID) {
         this.companyStaffID = companyStaffID;
     }
 

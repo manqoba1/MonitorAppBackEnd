@@ -35,6 +35,8 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "Company.findByCompanyName", 
             query = "SELECT c FROM Company c WHERE c.companyName = :companyName")})
 public class Company implements Serializable {
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "company")
+    private List<GcmDevice> gcmDeviceList;
     @OneToMany(mappedBy = "company")
     private List<ErrorStoreAndroid> errorStoreAndroidList;
     private static final long serialVersionUID = 1L;
@@ -131,6 +133,14 @@ public class Company implements Serializable {
 
     public void setErrorStoreAndroidList(List<ErrorStoreAndroid> errorStoreAndroidList) {
         this.errorStoreAndroidList = errorStoreAndroidList;
+    }
+
+    public List<GcmDevice> getGcmDeviceList() {
+        return gcmDeviceList;
+    }
+
+    public void setGcmDeviceList(List<GcmDevice> gcmDeviceList) {
+        this.gcmDeviceList = gcmDeviceList;
     }
     
 }

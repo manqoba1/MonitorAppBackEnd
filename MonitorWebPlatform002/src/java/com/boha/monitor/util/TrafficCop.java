@@ -34,6 +34,9 @@ public class TrafficCop {
                 r = dataUtil.registerProjectSiteStaff(req.getProjectSiteStaff());
                 break;
             //
+            case RequestDTO.ADD_DEVICE:
+                dataUtil.addDevice(req.getGcmDevice());
+                break;
             case RequestDTO.ADD_PROJECT_DIARY_RECORD:
                 r = dataUtil.addProjectDiaryRecord(req.getProjectDiaryRecord());
                 break;

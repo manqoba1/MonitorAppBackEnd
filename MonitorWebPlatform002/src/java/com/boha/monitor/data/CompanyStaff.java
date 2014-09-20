@@ -56,6 +56,8 @@ public class CompanyStaff implements Serializable {
     @Size(min = 1, max = 45)
     @Column(name = "lastName")
     private String lastName;
+    @Column(name = "activeFlag")
+    private Integer activeFlag;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 255)
@@ -93,6 +95,14 @@ public class CompanyStaff implements Serializable {
 
     public void setCompanyStaffID(Integer companyStaffID) {
         this.companyStaffID = companyStaffID;
+    }
+
+    public Integer getActiveFlag() {
+        return activeFlag;
+    }
+
+    public void setActiveFlag(Integer activeFlag) {
+        this.activeFlag = activeFlag;
     }
 
     public String getFirstName() {

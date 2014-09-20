@@ -38,6 +38,8 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "ProjectSite.findByLongitude", query = "SELECT p FROM ProjectSite p WHERE p.longitude = :longitude"),
     @NamedQuery(name = "ProjectSite.findByActiveFlag", query = "SELECT p FROM ProjectSite p WHERE p.activeFlag = :activeFlag")})
 public class ProjectSite implements Serializable {
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "projectSiteID")
+    private List<GcmDevice> gcmDeviceList;
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -156,6 +158,14 @@ public class ProjectSite implements Serializable {
     @Override
     public String toString() {
         return "com.boha.monitor.data.ProjectSite[ projectSiteID=" + projectSiteID + " ]";
+    }
+
+    public List<GcmDevice> getGcmDeviceList() {
+        return gcmDeviceList;
+    }
+
+    public void setGcmDeviceList(List<GcmDevice> gcmDeviceList) {
+        this.gcmDeviceList = gcmDeviceList;
     }
     
 }

@@ -6,9 +6,9 @@
 
 package com.boha.monitor.dto.transfer;
 
-import com.boha.monitor.data.Project;
 import com.boha.monitor.dto.CompanyDTO;
 import com.boha.monitor.dto.CompanyStaffDTO;
+import com.boha.monitor.dto.GcmDeviceDTO;
 import com.boha.monitor.dto.ProjectDTO;
 import com.boha.monitor.dto.ProjectDiaryRecordDTO;
 import com.boha.monitor.dto.ProjectSiteDTO;
@@ -30,6 +30,7 @@ public class RequestDTO implements Serializable{
     private ProjectDTO project;
     private ProjectSiteDTO projectSite;
     private ProjectSiteStaffDTO projectSiteStaff;
+    private GcmDeviceDTO gcmDevice;
     
     private ProjectSiteTaskDTO projectSiteTask;
     private ProjectDiaryRecordDTO projectDiaryRecord;
@@ -49,7 +50,8 @@ public class RequestDTO implements Serializable{
             ADD_PROJECT_SITE_TASK_STATUS = 13,
             ADD_PROJECT_STATUS_TYPE = 14,
             ADD_SITE_IMAGE = 15,
-            ADD_TASK_IMAGE = 16;
+            ADD_TASK_IMAGE = 16,
+            ADD_DEVICE = 17;
     //get stuff
     public static final int 
             GET_PROJECT_DATA = 101,
@@ -67,6 +69,15 @@ public class RequestDTO implements Serializable{
         return requestType;
     }
 
+    public GcmDeviceDTO getGcmDevice() {
+        return gcmDevice;
+    }
+
+    public void setGcmDevice(GcmDeviceDTO gcmDevice) {
+        this.gcmDevice = gcmDevice;
+    }
+
+    
     public void setRequestType(Integer requestType) {
         this.requestType = requestType;
     }
