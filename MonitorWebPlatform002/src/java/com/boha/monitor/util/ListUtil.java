@@ -52,4 +52,32 @@ public class ListUtil {
         
         return resp;
     }
+    public ResponseDTO getSiteData(Integer projectSiteID) throws DataException {
+        ResponseDTO resp = new ResponseDTO();
+        
+        try {
+            
+        } catch (Exception e) {
+            
+            throw new DataException("Failed");
+        }
+        
+        
+        
+        return resp;
+    }
+    public ResponseDTO getTaskStatusList() throws DataException {
+        ResponseDTO resp = new ResponseDTO();
+        
+        try {
+            
+        } catch (Exception e) {
+            
+            throw new DataException("Failed");
+        }
+        
+        
+        
+        return resp;
+    }
 }

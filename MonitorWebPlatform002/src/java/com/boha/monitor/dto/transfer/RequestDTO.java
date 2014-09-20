@@ -9,6 +9,7 @@ package com.boha.monitor.dto.transfer;
 import com.boha.monitor.data.Project;
 import com.boha.monitor.dto.CompanyDTO;
 import com.boha.monitor.dto.CompanyStaffDTO;
+import com.boha.monitor.dto.ProjectDTO;
 import com.boha.monitor.dto.ProjectDiaryRecordDTO;
 import com.boha.monitor.dto.ProjectSiteDTO;
 import com.boha.monitor.dto.ProjectSiteStaffDTO;
@@ -26,7 +27,7 @@ public class RequestDTO implements Serializable{
             projectSiteID;
     private CompanyDTO company;
     private CompanyStaffDTO companyStaff;
-    private Project project;
+    private ProjectDTO project;
     private ProjectSiteDTO projectSite;
     private ProjectSiteStaffDTO projectSiteStaff;
     
@@ -54,7 +55,9 @@ public class RequestDTO implements Serializable{
             GET_PROJECT_DATA = 101,
             GET_PROJECT_SITE_DATA = 102,
             GET_SITE_IMAGE_FILENAMES = 103,
-            GET_TASK_IMAGE_FILENAMES = 104;
+            GET_TASK_IMAGE_FILENAMES = 104,
+            GET_COMPANY_DATA = 105,
+            GET_TASK_STATUS_LIST = 106;
 
     public Integer getRequestType() {
         return requestType;
@@ -112,13 +115,15 @@ public class RequestDTO implements Serializable{
         this.companyStaff = companyStaff;
     }
 
-    public Project getProject() {
+    public ProjectDTO getProject() {
         return project;
     }
 
-    public void setProject(Project project) {
+    public void setProject(ProjectDTO project) {
         this.project = project;
     }
+
+   
 
     public ProjectSiteDTO getProjectSite() {
         return projectSite;

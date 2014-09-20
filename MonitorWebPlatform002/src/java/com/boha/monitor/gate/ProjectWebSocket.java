@@ -10,6 +10,7 @@ import com.boha.monitor.dto.transfer.ResponseDTO;
 import com.boha.monitor.util.DataException;
 import com.boha.monitor.util.DataUtil;
 import com.boha.monitor.util.GZipUtility;
+import com.boha.monitor.util.ListUtil;
 import com.boha.monitor.util.TrafficCop;
 import com.google.gson.Gson;
 import java.io.File;
@@ -40,6 +41,8 @@ public class ProjectWebSocket {
 
     @EJB
     DataUtil dataUtil;
+     @EJB
+    ListUtil listUtil;
     static final String SOURCE = "ProjectWebSocket";
     //TODO - clean up expired sessions!!!!
     public static final Set<Session> peers
@@ -51,7 +54,7 @@ public class ProjectWebSocket {
         ResponseDTO resp = new ResponseDTO();
         try {
             RequestDTO dto = gson.fromJson(message, RequestDTO.class);
-            resp = TrafficCop.processRequest(dto, dataUtil);
+            resp = TrafficCop.processRequest(dto, dataUtil, listUtil);
 
         } catch (DataException e) {
             resp.setStatusCode(101);
