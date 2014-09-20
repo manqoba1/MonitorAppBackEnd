@@ -33,6 +33,7 @@ import com.boha.monitor.dto.transfer.ResponseDTO;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.Stateless;
@@ -224,14 +225,15 @@ public class DataUtil {
         try {
             ProjectSite c = em.find(ProjectSite.class, staff.getProjectSiteID());
             ProjectSiteStaff ps = new ProjectSiteStaff();
-            ps.setCompanyStaff(em.find(CompanyStaff.class, staff.getCompanyStaffID()));
+            ps.setCompanyStaff(em.find(CompanyStaff.class, staff.getCompanyStaff().getCompanyStaffID()));
             ps.setDateRegistered(new Date());
             ps.setProjectSite(c);
+            ps.setPin(getRandomPin());
 
             em.persist(ps);
             Query q = em.createNamedQuery("ProjectSiteStaff.findBySiteAndStaff",
                     ProjectSiteStaff.class);
-            q.setParameter("companyStaffID", staff.getCompanyStaffID());
+            q.setParameter("companyStaffID", staff.getCompanyStaff().getCompanyStaffID());
             q.setParameter("projectSiteID", staff.getProjectSiteID());
             q.setMaxResults(1);
             ps = (ProjectSiteStaff) q.getSingleResult();
@@ -330,6 +332,7 @@ public class DataUtil {
             cs.setCellphone(staff.getCellphone());
             cs.setEmail(staff.getEmail());
             cs.setLastName(staff.getLastName());
+            cs.setPin(getRandomPin());
             cs.setCompanyStaffType(em.find(CompanyStaffType.class,
                     staff.getCompanyStaffType().getCompanyStaffTypeID()));
             em.persist(cs);
@@ -378,6 +381,7 @@ public class DataUtil {
             cs.setCellphone(staff.getCellphone());
             cs.setEmail(staff.getEmail());
             cs.setLastName(staff.getLastName());
+            cs.setPin(staff.getPin());
             cs.setCompanyStaffType(null);
             em.persist(cs);
 
@@ -417,6 +421,21 @@ public class DataUtil {
             sb.append("Line Number: ").append(line).append("\n");
         }
 
+        return sb.toString();
+    }
+    private String getRandomPin() {
+        StringBuilder sb = new StringBuilder();
+        Random rand = new Random(System.currentTimeMillis());
+        int x = rand.nextInt(9);
+        if (x == 0) {
+            x = 3;
+        }
+        sb.append(x);
+        sb.append(rand.nextInt(9));
+        sb.append(rand.nextInt(9));
+        sb.append(rand.nextInt(9));
+        sb.append(rand.nextInt(9));
+        sb.append(rand.nextInt(9));
         return sb.toString();
     }
     static final Logger log = Logger.getLogger(DataUtil.class.getSimpleName());

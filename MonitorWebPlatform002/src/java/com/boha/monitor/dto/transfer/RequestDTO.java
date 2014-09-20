@@ -58,7 +58,7 @@ public class RequestDTO implements Serializable{
             GET_PROJECT_SITE_DATA = 102,
             GET_SITE_IMAGE_FILENAMES = 103,
             GET_TASK_IMAGE_FILENAMES = 104,
-            GET_COMPANY_DATA = 105,
+            GET_COMPANY_STAFF = 105,
             GET_TASK_STATUS_LIST = 106;
 
     public static final String COMPANY_DIR = "company";

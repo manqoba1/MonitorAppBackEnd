@@ -31,9 +31,13 @@ import javax.validation.constraints.Size;
 @Entity
 @Table(name = "companyStaff")
 @NamedQueries({
-    @NamedQuery(name = "CompanyStaff.findAll", query = "SELECT c FROM CompanyStaff c"),
-    @NamedQuery(name = "CompanyStaff.findByCompanyStaffID", query = "SELECT c FROM CompanyStaff c WHERE c.companyStaffID = :companyStaffID"),
-    @NamedQuery(name = "CompanyStaff.findByFirstName", query = "SELECT c FROM CompanyStaff c WHERE c.firstName = :firstName"),
+    @NamedQuery(name = "CompanyStaff.findByCompany", 
+            query = "SELECT c FROM CompanyStaff c where c.company.companyID = :companyID "
+                    + "order by c.lastName, c.firstName"),
+    @NamedQuery(name = "CompanyStaff.findByCompanyStaffID", 
+            query = "SELECT c FROM CompanyStaff c WHERE c.companyStaffID = :companyStaffID"),
+    @NamedQuery(name = "CompanyStaff.login", 
+            query = "SELECT c FROM CompanyStaff c WHERE c.email = :email and c."),
     @NamedQuery(name = "CompanyStaff.findByLastName", query = "SELECT c FROM CompanyStaff c WHERE c.lastName = :lastName"),
     @NamedQuery(name = "CompanyStaff.findByEmail", query = "SELECT c FROM CompanyStaff c WHERE c.email = :email"),
     @NamedQuery(name = "CompanyStaff.findByCellphone", query = "SELECT c FROM CompanyStaff c WHERE c.cellphone = :cellphone")})
@@ -58,6 +62,8 @@ public class CompanyStaff implements Serializable {
     private String lastName;
     @Column(name = "activeFlag")
     private Integer activeFlag;
+    @Column(name = "pin")
+    private String pin;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 255)
@@ -87,6 +93,14 @@ public class CompanyStaff implements Serializable {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
+    }
+
+    public String getPin() {
+        return pin;
+    }
+
+    public void setPin(String pin) {
+        this.pin = pin;
     }
 
     public Integer getCompanyStaffID() {

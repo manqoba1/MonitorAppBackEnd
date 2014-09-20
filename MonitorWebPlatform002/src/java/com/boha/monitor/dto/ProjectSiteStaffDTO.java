@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package com.boha.monitor.dto;
 
+import com.boha.monitor.data.CompanyStaff;
 import com.boha.monitor.data.ProjectSiteStaff;
 import java.io.Serializable;
 import java.util.List;
@@ -15,15 +15,16 @@ import java.util.List;
  * @author aubreyM
  */
 public class ProjectSiteStaffDTO implements Serializable {
+
     private static final long serialVersionUID = 1L;
     private Integer projectSiteStaffID, activeFlag;
     private long dateRegistered;
     private List<ProjectDiaryRecordDTO> projectDiaryRecordList;
     private List<ProjectSiteTaskStatusDTO> projectSiteTaskStatusList;
     private Integer projectSiteID;
-    private Integer companyStaffID;
     private GcmDeviceDTO gcmDevice;
-    
+    private CompanyStaffDTO companyStaff;
+    private String pin;
 
     public ProjectSiteStaffDTO() {
     }
@@ -32,6 +33,15 @@ public class ProjectSiteStaffDTO implements Serializable {
         this.projectSiteStaffID = projectSiteStaffID;
     }
 
+    public String getPin() {
+        return pin;
+    }
+
+    public void setPin(String pin) {
+        this.pin = pin;
+    }
+
+    
     public Integer getActiveFlag() {
         return activeFlag;
     }
@@ -44,11 +54,20 @@ public class ProjectSiteStaffDTO implements Serializable {
         this.dateRegistered = a.getDateRegistered().getTime();
         this.projectSiteStaffID = a.getProjectSiteStaffID();
         this.projectSiteID = a.getProjectSite().getProjectSiteID();
-        this.companyStaffID = a.getCompanyStaff().getCompanyStaffID();
+        CompanyStaff cs = a.getCompanyStaff();
+        this.companyStaff = new CompanyStaffDTO(cs);
     }
 
     public GcmDeviceDTO getGcmDevice() {
         return gcmDevice;
+    }
+
+    public CompanyStaffDTO getCompanyStaff() {
+        return companyStaff;
+    }
+
+    public void setCompanyStaff(CompanyStaffDTO companyStaff) {
+        this.companyStaff = companyStaff;
     }
 
     public void setGcmDevice(GcmDeviceDTO gcmDevice) {
@@ -62,7 +81,6 @@ public class ProjectSiteStaffDTO implements Serializable {
     public void setProjectSiteStaffID(Integer projectSiteStaffID) {
         this.projectSiteStaffID = projectSiteStaffID;
     }
-
 
     public List<ProjectDiaryRecordDTO> getProjectDiaryRecordList() {
         return projectDiaryRecordList;
@@ -96,15 +114,6 @@ public class ProjectSiteStaffDTO implements Serializable {
         this.projectSiteID = projectSiteID;
     }
 
-    public Integer getCompanyStaffID() {
-        return companyStaffID;
-    }
-
-    public void setCompanyStaffID(Integer companyStaffID) {
-        this.companyStaffID = companyStaffID;
-    }
-
-  
 
     @Override
     public int hashCode() {
@@ -130,5 +139,5 @@ public class ProjectSiteStaffDTO implements Serializable {
     public String toString() {
         return "com.boha.monitor.data.ProjectSiteStaff[ projectSiteStaffID=" + projectSiteStaffID + " ]";
     }
-    
+
 }

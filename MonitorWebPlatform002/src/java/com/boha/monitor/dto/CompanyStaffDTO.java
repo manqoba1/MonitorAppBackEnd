@@ -20,7 +20,7 @@ public class CompanyStaffDTO implements Serializable {
     private String firstName;
     private String lastName;
     private String email;
-    private String cellphone;
+    private String cellphone, pin;
     private CompanyStaffTypeDTO companyStaffType;
     private Integer companyID;
     private List<ProjectSiteStaffDTO> projectSiteStaffList;
@@ -39,6 +39,22 @@ public class CompanyStaffDTO implements Serializable {
         this.companyID = a.getCompany().getCompanyID();
         this.activeFlag = a.getActiveFlag();
         
+    }
+
+    public Integer getActiveFlag() {
+        return activeFlag;
+    }
+
+    public void setActiveFlag(Integer activeFlag) {
+        this.activeFlag = activeFlag;
+    }
+
+    public String getPin() {
+        return pin;
+    }
+
+    public void setPin(String pin) {
+        this.pin = pin;
     }
 
     public Integer getCompanyStaffID() {

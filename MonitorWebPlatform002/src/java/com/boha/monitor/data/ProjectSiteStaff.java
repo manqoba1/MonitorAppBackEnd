@@ -34,9 +34,17 @@ import javax.validation.constraints.NotNull;
 @Table(name = "projectSiteStaff")
 @NamedQueries({
     @NamedQuery(name = "ProjectSiteStaff.findBySiteAndStaff", 
-            query = "SELECT p FROM ProjectSiteStaff p where p.companyStaff.companyStaffID = :companyStaffID and p.projectSite.projectSiteID = :projectSiteID"),
-    @NamedQuery(name = "ProjectSiteStaff.findByProjectSiteStaffID", query = "SELECT p FROM ProjectSiteStaff p WHERE p.projectSiteStaffID = :projectSiteStaffID"),
-    @NamedQuery(name = "ProjectSiteStaff.findByDateRegistered", query = "SELECT p FROM ProjectSiteStaff p WHERE p.dateRegistered = :dateRegistered")})
+            query = "SELECT p FROM ProjectSiteStaff p "
+                    + "where p.companyStaff.companyStaffID = :companyStaffID "
+                    + "and p.projectSite.projectSiteID = :projectSiteID"),
+    @NamedQuery(name = "ProjectSiteStaff.findByProjectSite", 
+            query = "SELECT p FROM ProjectSiteStaff p "
+                    + "WHERE p.projectSite.projectSiteID = :projectSiteID "
+                    + "order by p.companyStaff.lastName, p.companyStaff.firstName"),
+    @NamedQuery(name = "ProjectSiteStaff.findByProject", 
+            query = "SELECT p FROM ProjectSiteStaff p "
+                    + "WHERE p.projectSite.project.projectID = :projectID "
+                    + "order by p.companyStaff.lastName, p.companyStaff.firstName")})
 public class ProjectSiteStaff implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -46,7 +54,8 @@ public class ProjectSiteStaff implements Serializable {
     private Integer projectSiteStaffID;
     @Column(name = "activeFlag")
     private Integer activeFlag;
-    
+    @Column(name = "pin")
+    private String pin;
     @Basic(optional = false)
     @NotNull
     @Column(name = "dateRegistered")
@@ -81,6 +90,14 @@ public class ProjectSiteStaff implements Serializable {
 
     public void setProjectSiteStaffID(Integer projectSiteStaffID) {
         this.projectSiteStaffID = projectSiteStaffID;
+    }
+
+    public String getPin() {
+        return pin;
+    }
+
+    public void setPin(String pin) {
+        this.pin = pin;
     }
 
     public Date getDateRegistered() {

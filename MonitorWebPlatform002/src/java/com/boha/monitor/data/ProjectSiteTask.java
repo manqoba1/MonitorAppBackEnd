@@ -35,8 +35,10 @@ import javax.validation.constraints.Size;
 @Entity
 @Table(name = "projectSiteTask")
 @NamedQueries({
-    @NamedQuery(name = "ProjectSiteTask.findAll", query = "SELECT p FROM ProjectSiteTask p"),
-    @NamedQuery(name = "ProjectSiteTask.findByProjectSiteTaskID", query = "SELECT p FROM ProjectSiteTask p WHERE p.projectSiteTaskID = :projectSiteTaskID"),
+    @NamedQuery(name = "ProjectSiteTask.findByProject", 
+            query = "SELECT p FROM ProjectSiteTask p where p.projectSite.project.projectID = :projectID order by p.projectSite.projectSiteName"),
+    @NamedQuery(name = "ProjectSiteTask.findByProjectSite", 
+            query = "SELECT p FROM ProjectSiteTask p WHERE p.projectSite.projectSiteID = :projectSiteID order by p.dateRegistered desc"),
     @NamedQuery(name = "ProjectSiteTask.findByTaskName", 
             query = "SELECT p FROM ProjectSiteTask p WHERE p.taskName = :name and p.projectSite.projectSiteID = :projectSiteID"),
     @NamedQuery(name = "ProjectSiteTask.findByDateRegistered", query = "SELECT p FROM ProjectSiteTask p WHERE p.dateRegistered = :dateRegistered")})

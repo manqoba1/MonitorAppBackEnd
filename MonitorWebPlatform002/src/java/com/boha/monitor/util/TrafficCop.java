@@ -52,8 +52,8 @@ public class TrafficCop {
             case RequestDTO.GET_PROJECT_DATA:
                 r = listUtil.getProjectData(req.getProjectID());
                 break;
-            case RequestDTO.GET_COMPANY_DATA:
-                r = listUtil.getCompanyData(req.getCompanyID());
+            case RequestDTO.GET_COMPANY_STAFF:
+                r = listUtil.getCompanyStaff(req.getCompanyID());
                 break;
             case RequestDTO.GET_PROJECT_SITE_DATA:
                 r = listUtil.getSiteData(req.getProjectSiteID());

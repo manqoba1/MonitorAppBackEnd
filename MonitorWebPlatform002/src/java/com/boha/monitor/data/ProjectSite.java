@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package com.boha.monitor.data;
 
 import java.io.Serializable;
@@ -30,14 +29,16 @@ import javax.validation.constraints.Size;
 @Entity
 @Table(name = "projectSite")
 @NamedQueries({
-    @NamedQuery(name = "ProjectSite.findByProjectAndSiteName", 
+    @NamedQuery(name = "ProjectSite.findByProjectAndSiteName",
             query = "SELECT p FROM ProjectSite p where p.project.projectID = :projectID and p.projectSiteName = :name"),
-    @NamedQuery(name = "ProjectSite.findByProjectSiteID", query = "SELECT p FROM ProjectSite p WHERE p.projectSiteID = :projectSiteID"),
-    @NamedQuery(name = "ProjectSite.findByProjectSiteName", query = "SELECT p FROM ProjectSite p WHERE p.projectSiteName = :projectSiteName"),
-    @NamedQuery(name = "ProjectSite.findByLatitude", query = "SELECT p FROM ProjectSite p WHERE p.latitude = :latitude"),
-    @NamedQuery(name = "ProjectSite.findByLongitude", query = "SELECT p FROM ProjectSite p WHERE p.longitude = :longitude"),
-    @NamedQuery(name = "ProjectSite.findByActiveFlag", query = "SELECT p FROM ProjectSite p WHERE p.activeFlag = :activeFlag")})
+    @NamedQuery(name = "ProjectSite.findByProject",
+            query = "SELECT p FROM ProjectSite p WHERE p.project.projectID = :projectID order by p.projectSiteName"),
+    @NamedQuery(name = "ProjectSite.findByCompany",
+            query = "SELECT p FROM ProjectSite p WHERE p.project.company.companyID = :companyID order by p.project.projectName, p.projectSiteName"),
+    @NamedQuery(name = "ProjectSite.findByActiveFlag",
+            query = "SELECT p FROM ProjectSite p WHERE p.activeFlag = :activeFlag")})
 public class ProjectSite implements Serializable {
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "projectSiteID")
     private List<GcmDevice> gcmDeviceList;
     private static final long serialVersionUID = 1L;
@@ -126,7 +127,6 @@ public class ProjectSite implements Serializable {
         this.project = project;
     }
 
-
     public List<ProjectSiteStaff> getProjectSiteStaffList() {
         return projectSiteStaffList;
     }
@@ -167,5 +167,5 @@ public class ProjectSite implements Serializable {
     public void setGcmDeviceList(List<GcmDevice> gcmDeviceList) {
         this.gcmDeviceList = gcmDeviceList;
     }
-    
+
 }
