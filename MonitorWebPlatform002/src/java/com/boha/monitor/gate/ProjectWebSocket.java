@@ -41,7 +41,7 @@ public class ProjectWebSocket {
 
     @EJB
     DataUtil dataUtil;
-     @EJB
+    @EJB
     ListUtil listUtil;
     static final String SOURCE = "ProjectWebSocket";
     //TODO - clean up expired sessions!!!!

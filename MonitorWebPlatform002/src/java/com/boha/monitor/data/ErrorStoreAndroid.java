@@ -32,15 +32,10 @@ import javax.validation.constraints.Size;
 @Entity
 @Table(name = "errorStoreAndroid")
 @NamedQueries({
-    @NamedQuery(name = "ErrorStoreAndroid.findAll", query = "SELECT e FROM ErrorStoreAndroid e"),
-    @NamedQuery(name = "ErrorStoreAndroid.findByErrorStoreAndroidID", query = "SELECT e FROM ErrorStoreAndroid e WHERE e.errorStoreAndroidID = :errorStoreAndroidID"),
-    @NamedQuery(name = "ErrorStoreAndroid.findByErrorDate", query = "SELECT e FROM ErrorStoreAndroid e WHERE e.errorDate = :errorDate"),
-    @NamedQuery(name = "ErrorStoreAndroid.findByPackageName", query = "SELECT e FROM ErrorStoreAndroid e WHERE e.packageName = :packageName"),
-    @NamedQuery(name = "ErrorStoreAndroid.findByAppVersionName", query = "SELECT e FROM ErrorStoreAndroid e WHERE e.appVersionName = :appVersionName"),
-    @NamedQuery(name = "ErrorStoreAndroid.findByAppVersionCode", query = "SELECT e FROM ErrorStoreAndroid e WHERE e.appVersionCode = :appVersionCode"),
-    @NamedQuery(name = "ErrorStoreAndroid.findByBrand", query = "SELECT e FROM ErrorStoreAndroid e WHERE e.brand = :brand"),
-    @NamedQuery(name = "ErrorStoreAndroid.findByPhoneModel", query = "SELECT e FROM ErrorStoreAndroid e WHERE e.phoneModel = :phoneModel"),
-    @NamedQuery(name = "ErrorStoreAndroid.findByAndroidVersion", query = "SELECT e FROM ErrorStoreAndroid e WHERE e.androidVersion = :androidVersion")})
+    @NamedQuery(name = "ErrorStoreAndroid.findByCompany", 
+            query = "SELECT e FROM ErrorStoreAndroid e where e.company.companyID = :id order by e.errorDate desc"),
+    @NamedQuery(name = "ErrorStoreAndroid.findByPeriod", 
+            query = "SELECT e FROM ErrorStoreAndroid e WHERE e.errorDate BETWEEN :from AND :to order by e.errorDate desc")})
 public class ErrorStoreAndroid implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id

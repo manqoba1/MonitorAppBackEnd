@@ -7,7 +7,6 @@ package com.boha.monitor.gate;
 import com.boha.monitor.dto.transfer.PhotoUploadDTO;
 import com.boha.monitor.dto.transfer.RequestDTO;
 import com.boha.monitor.dto.transfer.ResponseDTO;
-import com.boha.monitor.util.FileUtility;
 import com.boha.monitor.util.MonitorProperties;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;

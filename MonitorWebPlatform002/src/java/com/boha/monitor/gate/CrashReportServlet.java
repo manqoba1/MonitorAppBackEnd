@@ -41,15 +41,7 @@ public class CrashReportServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         log.log(Level.INFO, "CrashReportSevlet started............");
-//        Enumeration<String> rr = request.getParameterNames();
-//        StringBuilder sb = new StringBuilder();
-//        sb.append("######################################################\n");
-//        while (rr.hasMoreElements()) {
-//            String parm = rr.nextElement();
-//            sb.append(parm).append(" = ").append(request.getParameter(parm)).append("\n");
-//        }
-//        sb.append("######################################################\n");
-//        log.log(Level.OFF, sb.toString());
+
         try {
             getErrorData(request);
         } catch (DataException ex) {
@@ -75,8 +67,8 @@ public class CrashReportServlet extends HttpServlet {
         e.setStackTrace(request.getParameter("STACK_TRACE"));
 
         String custom = request.getParameter("CUSTOM_DATA");
-        //golfGroupID = 21
-        //golfGroupName = MLB Golfers
+        //companyID = 21
+        //companyName = MLB Golfers
         try {
             if (custom != null || !custom.trim().isEmpty()) {
                 int x = custom.indexOf("=");

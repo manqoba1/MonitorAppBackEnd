@@ -55,7 +55,6 @@ public class CompanyWebSocket {
         try {
             RequestDTO dto = gson.fromJson(message, RequestDTO.class);
             resp = TrafficCop.processRequest(dto, dataUtil, listUtil);
-
         } catch (DataException e) {
             resp.setStatusCode(101);
             resp.setMessage("Data service failed to process your request");

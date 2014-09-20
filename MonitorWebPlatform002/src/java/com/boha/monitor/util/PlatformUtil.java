@@ -55,7 +55,7 @@ public class PlatformUtil {
             log.log(Level.SEVERE, "####### Failed to add errorStore from " + origin + "\n" + message, e);
         }
     }
-    static final int THRESHOLD_SECONDS = 5;
+    static final int THRESHOLD_SECONDS = 6;
     public static final int ERROR_DATABASE = 111, ERROR_SERVER = 112,
             SIGNIFICANT_EVENT = 0, ERROR_WEBSOCKET = 113, ERROR_UNKNOWN_REQUEST = 114;
     static final Logger log = Logger.getLogger(PlatformUtil.class.getName());

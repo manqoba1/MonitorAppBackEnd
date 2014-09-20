@@ -52,14 +52,6 @@ public class MonitorProperties {
         return d;
     }
 
-    public static File getChartsDir() {
-        getProperties();
-        File d = new File(props.getProperty("charts"));
-        if (!d.exists()) {
-            d.mkdir();
-        }
-        return d;
-    }
 
     private static void getProperties() {
         if (props != null) {
@@ -68,18 +60,18 @@ public class MonitorProperties {
         props = new Properties();
         try {
             File f = null;
-            f = new File("/workspaces/properties/golfkids.properties");
+            f = new File("/workspaces/properties/monitor.properties");
             if (!f.exists()) {
-                f = new File("/opt/properties/golfkids.properties");
+                f = new File("/opt/properties/monitor.properties");
             }
             if (!f.exists()) {
-                logger.log(Level.SEVERE, "MalengaGolf Properties File not found");
+                logger.log(Level.SEVERE, "Monitor Properties File not found");
             } else {
-                logger.log(Level.INFO, "MalengaGolf Properties: {0}\n\n\n", f.getAbsolutePath());
+                logger.log(Level.INFO, "Monitor Properties: {0}\n\n\n", f.getAbsolutePath());
                 props.load(new FileInputStream(f));
             }
         } catch (IOException e) {
-            logger.log(Level.SEVERE, "Properties file golfkids.properties not found or corrupted");
+            logger.log(Level.SEVERE, "Properties file monitor.properties not found or corrupted");
         }
 
     }
