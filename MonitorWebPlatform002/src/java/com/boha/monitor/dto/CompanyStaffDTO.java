@@ -9,6 +9,7 @@ package com.boha.monitor.dto;
 import com.boha.monitor.data.Company;
 import com.boha.monitor.data.CompanyStaff;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -24,7 +25,7 @@ public class CompanyStaffDTO implements Serializable {
     private String cellphone, pin;
     private CompanyStaffTypeDTO companyStaffType;
     private Integer companyID;
-    private List<ProjectSiteStaffDTO> projectSiteStaffList;
+    private List<ProjectSiteStaffDTO> projectSiteStaffList = new ArrayList<>();
     private GcmDeviceDTO gcmDevice;
 
     public CompanyStaffDTO() {

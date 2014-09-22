@@ -52,8 +52,7 @@ public class Company implements Serializable {
     private String companyName;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "company")
     private List<Project> projectList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "company")
-    private List<ProjectStatusType> projectStatusTypeList;
+    
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "company")
     private List<CompanyStaff> companyStaffList;
 
@@ -88,13 +87,7 @@ public class Company implements Serializable {
         this.projectList = projectList;
     }
 
-    public List<ProjectStatusType> getProjectStatusTypeList() {
-        return projectStatusTypeList;
-    }
-
-    public void setProjectStatusTypeList(List<ProjectStatusType> projectStatusTypeList) {
-        this.projectStatusTypeList = projectStatusTypeList;
-    }
+   
 
     public List<CompanyStaff> getCompanyStaffList() {
         return companyStaffList;

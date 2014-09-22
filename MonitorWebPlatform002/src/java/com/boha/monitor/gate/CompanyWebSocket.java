@@ -76,6 +76,7 @@ public class CompanyWebSocket {
         try {
             ResponseDTO r = new ResponseDTO();
             r.setSessionID(session.getId());
+            r.setStatusCode(0);
             session.getBasicRemote().sendText(gson.toJson(r));
             log.log(Level.WARNING, "onOpen...sent session id: {0}", session.getId());
         } catch (IOException ex) {

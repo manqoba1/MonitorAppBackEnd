@@ -10,6 +10,7 @@ import com.boha.monitor.data.Project;
 import com.boha.monitor.data.ProjectSite;
 import com.boha.monitor.util.FileUtility;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -25,10 +26,10 @@ public class ProjectSiteDTO implements Serializable {
     private Double latitude;
     private Double longitude;
     private Integer activeFlag;
-    private List<ProjectSiteTaskDTO> projectSiteTaskList;
+    private List<ProjectSiteTaskDTO> projectSiteTaskList = new ArrayList<>();
     private Integer projectID;
-    private List<ProjectSiteStaffDTO> projectSiteStaffList;
-    private List<String> imageFileNameList;
+    private List<ProjectSiteStaffDTO> projectSiteStaffList = new ArrayList<>();
+    private List<String> imageFileNameList = new ArrayList<>();
 
     public ProjectSiteDTO() {
     }

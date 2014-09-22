@@ -55,13 +55,21 @@ public class TrafficCop {
             case RequestDTO.GET_COMPANY_STAFF:
                 r = listUtil.getCompanyStaff(req.getCompanyID());
                 break;
-            case RequestDTO.GET_PROJECT_SITE_DATA:
-                r = listUtil.getSiteData(req.getProjectSiteID());
+            case RequestDTO.GET_COMPANY_DATA:
+                r = listUtil.getCompanyData(req.getCompanyID());
                 break;
             case RequestDTO.GET_TASK_STATUS_LIST:
                 r = listUtil.getTaskStatusList();
                 break;
-        }       
+            case RequestDTO.LOGIN:
+                r = dataUtil.login(req.getGcmDevice(), 
+                        req.getEmail(), req.getPin(), 
+                        req.getLoginType(), listUtil);
+                break;
+        }   
+        if (r.getStatusCode() == null) {
+            r.setStatusCode(0);
+        }
         return r;
     }
 }

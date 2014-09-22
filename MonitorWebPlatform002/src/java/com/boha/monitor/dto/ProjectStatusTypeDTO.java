@@ -19,7 +19,6 @@ public class ProjectStatusTypeDTO implements Serializable {
     private Integer projectStatusTypeID;
     private String projectStatusName;
     private List<ProjectDiaryRecordDTO> projectDiaryRecordList;
-    private Integer companyID;
 
     public ProjectStatusTypeDTO() {
     }
@@ -27,12 +26,6 @@ public class ProjectStatusTypeDTO implements Serializable {
     public ProjectStatusTypeDTO(ProjectStatusType a) {
         this.projectStatusTypeID = a.getProjectStatusTypeID();
         this.projectStatusName = a.getProjectStatusName();
-        this.companyID = a.getCompany().getCompanyID();
-    }
-
-    public ProjectStatusTypeDTO(Integer projectStatusTypeID, String projectStatusName) {
-        this.projectStatusTypeID = projectStatusTypeID;
-        this.projectStatusName = projectStatusName;
     }
 
     public Integer getProjectStatusTypeID() {
@@ -58,15 +51,6 @@ public class ProjectStatusTypeDTO implements Serializable {
     public void setProjectDiaryRecordList(List<ProjectDiaryRecordDTO> projectDiaryRecordList) {
         this.projectDiaryRecordList = projectDiaryRecordList;
     }
-
-    public Integer getCompanyID() {
-        return companyID;
-    }
-
-    public void setCompanyID(Integer companyID) {
-        this.companyID = companyID;
-    }
-
    
     @Override
     public int hashCode() {

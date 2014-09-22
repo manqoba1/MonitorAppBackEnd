@@ -6,9 +6,11 @@
 
 package com.boha.monitor.dto;
 
+import com.boha.monitor.data.CompanyStaff;
+import com.boha.monitor.data.ProjectSiteStaff;
+import com.boha.monitor.data.ProjectSiteTask;
 import com.boha.monitor.data.ProjectSiteTaskStatus;
 import java.io.Serializable;
-import java.util.Date;
 
 /**
  *
@@ -20,17 +22,56 @@ public class ProjectSiteTaskStatusDTO implements Serializable {
     private long dateUpdated;
     private TaskStatusDTO taskStatus;
     private Integer projectSiteTaskID;
-    private Integer projectSiteStaffID;
+    private Integer projectSiteStaffID, companyStaffID;
+    private String projectSiteName, projectName, staffName;
 
     public ProjectSiteTaskStatusDTO() {
     }
 
     public ProjectSiteTaskStatusDTO(ProjectSiteTaskStatus a) {
         this.projectSiteTaskStatusID = a.getProjectSiteTaskStatusID();
-        this.projectSiteStaffID = a.getProjectSiteStaff().getProjectSiteStaffID();
-        this.projectSiteTaskID = a.getProjectSiteTask().getProjectSiteTaskID();
+        ProjectSiteTask pst = a.getProjectSiteTask();
+        this.projectSiteName = pst.getProjectSite().getProjectSiteName();
+        this.projectSiteTaskID = pst.getProjectSiteTaskID();
         this.taskStatus = new TaskStatusDTO(a.getTaskStatus());
         this.dateUpdated = a.getDateUpdated().getTime();
+        ProjectSiteStaff s = a.getProjectSiteStaff();
+        CompanyStaff cs = s.getCompanyStaff();
+        this.companyStaffID = cs.getCompanyStaffID();
+        this.staffName = cs.getFirstName() + " " + cs.getLastName();
+        this.projectSiteStaffID = s.getProjectSiteStaffID();
+    }
+
+    public Integer getCompanyStaffID() {
+        return companyStaffID;
+    }
+
+    public void setCompanyStaffID(Integer companyStaffID) {
+        this.companyStaffID = companyStaffID;
+    }
+
+    public String getProjectSiteName() {
+        return projectSiteName;
+    }
+
+    public void setProjectSiteName(String projectSiteName) {
+        this.projectSiteName = projectSiteName;
+    }
+
+    public String getProjectName() {
+        return projectName;
+    }
+
+    public void setProjectName(String projectName) {
+        this.projectName = projectName;
+    }
+
+    public String getStaffName() {
+        return staffName;
+    }
+
+    public void setStaffName(String staffName) {
+        this.staffName = staffName;
     }
 
    

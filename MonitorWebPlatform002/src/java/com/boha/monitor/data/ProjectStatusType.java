@@ -31,7 +31,8 @@ import javax.validation.constraints.Size;
 @Entity
 @Table(name = "projectStatusType")
 @NamedQueries({
-    @NamedQuery(name = "ProjectStatusType.findAll", query = "SELECT p FROM ProjectStatusType p"),
+    @NamedQuery(name = "ProjectStatusType.findAll", 
+            query = "SELECT p FROM ProjectStatusType p order by p.projectStatusName"),
     @NamedQuery(name = "ProjectStatusType.findByProjectStatusTypeID", query = "SELECT p FROM ProjectStatusType p WHERE p.projectStatusTypeID = :projectStatusTypeID"),
     @NamedQuery(name = "ProjectStatusType.findByProjectStatusName", query = "SELECT p FROM ProjectStatusType p WHERE p.projectStatusName = :projectStatusName")})
 public class ProjectStatusType implements Serializable {
@@ -48,10 +49,7 @@ public class ProjectStatusType implements Serializable {
     private String projectStatusName;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "projectStatusType")
     private List<ProjectDiaryRecord> projectDiaryRecordList;
-    @JoinColumn(name = "companyID", referencedColumnName = "companyID")
-    @ManyToOne(optional = false)
-    private Company company;
-
+    
     public ProjectStatusType() {
     }
 
@@ -86,14 +84,6 @@ public class ProjectStatusType implements Serializable {
 
     public void setProjectDiaryRecordList(List<ProjectDiaryRecord> projectDiaryRecordList) {
         this.projectDiaryRecordList = projectDiaryRecordList;
-    }
-
-    public Company getCompany() {
-        return company;
-    }
-
-    public void setCompany(Company company) {
-        this.company = company;
     }
 
  

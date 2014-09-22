@@ -57,12 +57,10 @@ public class DataUtil {
 
     @PersistenceContext
     EntityManager em;
-
     public ResponseDTO login(GcmDeviceDTO device, String email,
             String pin, Integer loginType, ListUtil listUtil) throws DataException {
         ResponseDTO resp = new ResponseDTO();
         Query q = null;
-
         try {
             switch (loginType) {
                 case RequestDTO.LOGIN_OFFICE_ADMIN:
@@ -72,6 +70,8 @@ public class DataUtil {
                     q.setMaxResults(1);
                     CompanyStaff cs = (CompanyStaff) q.getSingleResult();
                     resp.getCompanyStaffList().add(new CompanyStaffDTO(cs));
+                    resp.setProjectList(listUtil.getCompanyData(cs.getCompany()
+                            .getCompanyID()).getProjectList());
                     device.setCompanyID(cs.getCompany().getCompanyID());
                     device.setCompanyStaffID(cs.getCompanyStaffID());
 
@@ -85,6 +85,8 @@ public class DataUtil {
                     ProjectSiteStaff pss = (ProjectSiteStaff) q.getSingleResult();
                     resp.getProjectSiteStaffList().add(new ProjectSiteStaffDTO(pss));
                     resp.getCompanyStaffList().add(new CompanyStaffDTO(pss.getCompanyStaff()));
+                    resp.setTaskStatusList(listUtil.getTaskStatusList().getTaskStatusList());
+                    resp.setProjectStatusTypeList(listUtil.getProjectStatusList().getProjectStatusTypeList());
 
                     device.setCompanyID(pss.getCompanyStaff().getCompany().getCompanyID());
                     device.setCompanyStaffID(pss.getCompanyStaff().getCompanyStaffID());

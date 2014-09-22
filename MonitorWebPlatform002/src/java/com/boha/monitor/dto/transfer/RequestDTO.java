@@ -61,9 +61,11 @@ public class RequestDTO implements Serializable{
             GET_TASK_IMAGE_FILENAMES = 104,
             GET_COMPANY_STAFF = 105,
             GET_TASK_STATUS_LIST = 106,
-            GET_COMPANY_STAFF_TYPE_LIST = 107;
+            GET_COMPANY_STAFF_TYPE_LIST = 107,
+            GET_COMPANY_DATA = 108;
     //login's 
     public static final int 
+            LOGIN = 200,
             LOGIN_OFFICE_ADMIN = 201,
             LOGIN_EXECUTIVE = 202,
             LOGIN_PROJECT_STAFF = 203;

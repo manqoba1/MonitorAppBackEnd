@@ -43,6 +43,10 @@ import javax.validation.constraints.NotNull;
             query = "SELECT p FROM ProjectSiteStaff p "
                     + "WHERE p.projectSite.projectSiteID = :projectSiteID "
                     + "order by p.companyStaff.lastName, p.companyStaff.firstName"),
+    @NamedQuery(name = "ProjectSiteStaff.findByCompany", 
+            query = "SELECT p FROM ProjectSiteStaff p "
+                    + "WHERE p.projectSite.project.company.companyID = :companyID "
+                    + "order by p.companyStaff.lastName, p.companyStaff.firstName"),
     @NamedQuery(name = "ProjectSiteStaff.findByProject", 
             query = "SELECT p FROM ProjectSiteStaff p "
                     + "WHERE p.projectSite.project.projectID = :projectID "
