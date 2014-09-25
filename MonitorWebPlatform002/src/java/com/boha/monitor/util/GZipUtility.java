@@ -29,7 +29,7 @@ public class GZipUtility {
                 dir.mkdir();
             }
             Random rand = new Random(System.currentTimeMillis());
-            gzipFileName = "golf" + System.currentTimeMillis()
+            gzipFileName = "monitor" + System.currentTimeMillis()
                     + "_" + rand.nextInt(99999999) + ".data.gz";
             zip = new File(dir, gzipFileName);
             //logger.log(Level.INFO, "### new zip file to be filled: {0}", zip.getAbsolutePath());
