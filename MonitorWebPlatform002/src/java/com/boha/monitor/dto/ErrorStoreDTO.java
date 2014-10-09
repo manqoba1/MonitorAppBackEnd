@@ -5,14 +5,15 @@
 package com.boha.monitor.dto;
 
 import com.boha.monitor.data.ErrorStore;
-
+import java.io.Serializable;
 
 /**
  *
  * @author aubreyM
  */
-public class ErrorStoreDTO {
+public class ErrorStoreDTO implements Serializable {
 
+    private static final long serialVersionUID = 1L;
     private int errorStoreID;
     private int statusCode;
     private String message, origin;

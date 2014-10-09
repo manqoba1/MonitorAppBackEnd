@@ -41,7 +41,7 @@ public class FileUtility {
             int projectSiteTaskID) throws Exception {
         List<String> list = new ArrayList<>();
         File rootDir = MonitorProperties.getImageDir();
-        File ggRoot = new File(rootDir, RequestDTO.COMPANY_DIR + companyID);
+        File ggRoot = new File(rootDir,RequestDTO.COMPANY_DIR + companyID);
         File dir = null;
 
         dir = new File(ggRoot, RequestDTO.PROJECT_DIR + projectID);
@@ -74,7 +74,7 @@ public class FileUtility {
     public static List<String> getImageFilesSite(int companyID, int projectID, int projectSiteID) throws Exception {
         List<String> list = new ArrayList<>();
         File rootDir = MonitorProperties.getImageDir();
-        File ggRoot = new File(rootDir, RequestDTO.COMPANY_DIR + companyID);
+        File ggRoot = new File(RequestDTO.COMPANY_DIR + companyID);
         File dir = null;
 
         dir = new File(ggRoot, RequestDTO.PROJECT_DIR + projectID);

@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package com.boha.monitor.dto.transfer;
 
 import com.boha.monitor.dto.CompanyDTO;
@@ -22,9 +21,11 @@ import java.io.Serializable;
  *
  * @author aubreyM
  */
-public class RequestDTO implements Serializable{
-    private Integer requestType, companyID, companyStaffID, projectID, 
+public class RequestDTO implements Serializable {
+
+    private Integer requestType, companyID, companyStaffID, projectID,
             projectSiteID, loginType;
+    private int day;
     private String email, pin;
     private CompanyDTO company;
     private CompanyStaffDTO companyStaff;
@@ -32,21 +33,19 @@ public class RequestDTO implements Serializable{
     private ProjectSiteDTO projectSite;
     private ProjectSiteStaffDTO projectSiteStaff;
     private GcmDeviceDTO gcmDevice;
-    
+
     private ProjectSiteTaskDTO projectSiteTask;
     private ProjectDiaryRecordDTO projectDiaryRecord;
     private ProjectSiteTaskStatusDTO projectSiteTaskStatus;
     private ProjectStatusTypeDTO projectStatusType;
     //register actors
-    public static final int 
-            REGISTER_COMPANY = 1,
+    public static final int REGISTER_COMPANY = 1,
             REGISTER_COMPANY_STAFF = 2,
             REGISTER_PROJECT = 3,
             REGISTER_PROJECT_SITE = 4,
             REGISTER_PROJECT_SITE_STAFF = 5;
     //add stuff
-    public static final int 
-            ADD_PROJECT_SITE_TASK = 11,
+    public static final int ADD_PROJECT_SITE_TASK = 11,
             ADD_PROJECT_DIARY_RECORD = 12,
             ADD_PROJECT_SITE_TASK_STATUS = 13,
             ADD_PROJECT_STATUS_TYPE = 14,
@@ -54,18 +53,17 @@ public class RequestDTO implements Serializable{
             ADD_TASK_IMAGE = 16,
             ADD_DEVICE = 17;
     //get stuff
-    public static final int 
-            GET_PROJECT_DATA = 101,
+    public static final int GET_PROJECT_DATA = 101,
             GET_PROJECT_SITE_DATA = 102,
             GET_SITE_IMAGE_FILENAMES = 103,
             GET_TASK_IMAGE_FILENAMES = 104,
             GET_COMPANY_STAFF = 105,
             GET_TASK_STATUS_LIST = 106,
             GET_COMPANY_STAFF_TYPE_LIST = 107,
-            GET_COMPANY_DATA = 108;
+            GET_COMPANY_DATA = 108,
+            GET_ANDROID_ERROR_DATA = 109;
     //login's 
-    public static final int 
-            LOGIN = 200,
+    public static final int LOGIN = 200,
             LOGIN_OFFICE_ADMIN = 201,
             LOGIN_EXECUTIVE = 202,
             LOGIN_PROJECT_STAFF = 203;
@@ -99,8 +97,7 @@ public class RequestDTO implements Serializable{
     public void setPin(String pin) {
         this.pin = pin;
     }
-    
-    
+
     public Integer getRequestType() {
         return requestType;
     }
@@ -113,7 +110,14 @@ public class RequestDTO implements Serializable{
         this.gcmDevice = gcmDevice;
     }
 
-    
+    public int getDay() {
+        return day;
+    }
+
+    public void setDay(int day) {
+        this.day = day;
+    }
+
     public void setRequestType(Integer requestType) {
         this.requestType = requestType;
     }
@@ -174,8 +178,6 @@ public class RequestDTO implements Serializable{
         this.project = project;
     }
 
-   
-
     public ProjectSiteDTO getProjectSite() {
         return projectSite;
     }
@@ -223,6 +225,5 @@ public class RequestDTO implements Serializable{
     public void setProjectStatusType(ProjectStatusTypeDTO projectStatusType) {
         this.projectStatusType = projectStatusType;
     }
-    
-    
+
 }

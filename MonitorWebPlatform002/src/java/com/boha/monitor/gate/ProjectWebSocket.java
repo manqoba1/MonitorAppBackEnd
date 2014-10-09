@@ -24,6 +24,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.ejb.Stateful;
+import javax.websocket.EndpointConfig;
 import javax.websocket.OnClose;
 import javax.websocket.OnError;
 import javax.websocket.OnMessage;
@@ -35,7 +36,7 @@ import javax.websocket.server.ServerEndpoint;
  *
  * @author aubreyM
  */
-@ServerEndpoint("/wsproject")
+@ServerEndpoint(value = "/wsproject")
 @Stateful
 public class ProjectWebSocket {
 
@@ -52,26 +53,35 @@ public class ProjectWebSocket {
     public ByteBuffer onMessage(String message) {
         log.log(Level.WARNING, "onMessage: {0}", message);
         ResponseDTO resp = new ResponseDTO();
-        try {
-            RequestDTO dto = gson.fromJson(message, RequestDTO.class);
-            resp = TrafficCop.processRequest(dto, dataUtil, listUtil);
-
-        } catch (DataException e) {
-            resp.setStatusCode(101);
-            resp.setMessage("Data service failed to process your request");
-            log.log(Level.SEVERE, "Database related failure", e);
-        }
         ByteBuffer bb = null;
         try {
-            bb = getZippedResponse(resp);
-        } catch (Exception ex) {
-            log.log(Level.SEVERE, null, ex);
+
+            try {
+                RequestDTO dto = gson.fromJson(message, RequestDTO.class);
+                resp = TrafficCop.processRequest(dto, dataUtil, listUtil);
+
+            } catch (DataException e) {
+                resp.setStatusCode(101);
+                resp.setMessage("Data service failed to process your request");
+                log.log(Level.SEVERE, "Database related failure", e);
+                bb = GZipUtility.getZippedResponse(resp);
+            }
+            bb = GZipUtility.getZippedResponse(resp);
+        } catch (IOException ex) {
+            Logger.getLogger(ProjectWebSocket.class.getName()).log(Level.SEVERE, null, ex);
+            resp.setStatusCode(111);
+            resp.setMessage("Problem processing request on server");
+            try {
+                bb = GZipUtility.getZippedResponse(resp);
+            } catch (IOException ex1) {
+                Logger.getLogger(ProjectWebSocket.class.getName()).log(Level.SEVERE, null, ex1);
+            }
         }
         return bb;
     }
 
-    @OnOpen
-    public void onOpen(Session session) {
+    @OnOpen 
+    public void onOpen(Session session, EndpointConfig ec) {
 
         peers.add(session);
         try {
@@ -85,8 +95,7 @@ public class ProjectWebSocket {
     }
 
     @OnClose
-    public void onClose(Session session
-    ) {
+    public void onClose(Session session) {
         log.log(Level.WARNING, "onClose - remove session: {0}", session.getId());
         for (Session mSession : peers) {
             if (session.getId().equalsIgnoreCase(mSession.getId())) {
@@ -97,24 +106,11 @@ public class ProjectWebSocket {
     }
 
     @OnError
-    public void onError(Throwable t) {
+    public void onError(Session s, Throwable t) {
         log.log(Level.SEVERE, null, t);
 
     }
 
-    private ByteBuffer getZippedResponse(ResponseDTO resp)
-            throws Exception {
-        File file = GZipUtility.getZipped(gson.toJson(resp));
-        byte[] bFile = new byte[(int) file.length()];
-        FileInputStream fileInputStream = null;
-
-        //convert file into array of bytes
-        fileInputStream = new FileInputStream(file);
-        fileInputStream.read(bFile);
-        fileInputStream.close();
-        ByteBuffer buf = ByteBuffer.wrap(bFile);
-        return buf;
-    }
     Gson gson = new Gson();
     static final Logger log = Logger.getLogger(ProjectWebSocket.class.getSimpleName());
 }

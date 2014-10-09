@@ -69,6 +69,7 @@ public class CrashReportServlet extends HttpServlet {
         String custom = request.getParameter("CUSTOM_DATA");
         //companyID = 21
         //companyName = MLB Golfers
+        log.log(Level.OFF, custom);
         try {
             if (custom != null || !custom.trim().isEmpty()) {
                 int x = custom.indexOf("=");

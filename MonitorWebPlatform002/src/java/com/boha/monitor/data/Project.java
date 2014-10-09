@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package com.boha.monitor.data;
 
 import java.io.Serializable;
@@ -35,14 +34,15 @@ import javax.validation.constraints.Size;
 @Entity
 @Table(name = "project")
 @NamedQueries({
-    @NamedQuery(name = "Project.findByCompanyProjectName", 
+    @NamedQuery(name = "Project.findByCompanyProjectName",
             query = "SELECT p FROM Project p where p.company.companyID = :companyID and p.projectName = :projectName"),
-    @NamedQuery(name = "Project.findByCompany", 
+    @NamedQuery(name = "Project.findByCompany",
             query = "SELECT p FROM Project p WHERE p.company.companyID = :companyID order by p.dateRegistered desc"),
     @NamedQuery(name = "Project.findByProjectName", query = "SELECT p FROM Project p WHERE p.projectName = :projectName"),
     @NamedQuery(name = "Project.findByDateRegistered", query = "SELECT p FROM Project p WHERE p.dateRegistered = :dateRegistered"),
     @NamedQuery(name = "Project.findByCompleteFlag", query = "SELECT p FROM Project p WHERE p.completeFlag = :completeFlag")})
 public class Project implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -164,5 +164,5 @@ public class Project implements Serializable {
     public String toString() {
         return "com.boha.monitor.data.Project[ projectID=" + projectID + " ]";
     }
-    
+
 }

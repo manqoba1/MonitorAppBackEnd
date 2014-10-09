@@ -60,7 +60,7 @@ public class MonitorProperties {
         props = new Properties();
         try {
             File f = null;
-            f = new File("/workspaces/properties/monitor.properties");
+            f = new File("C:/properties/monitor.properties");
             if (!f.exists()) {
                 f = new File("/opt/properties/monitor.properties");
             }

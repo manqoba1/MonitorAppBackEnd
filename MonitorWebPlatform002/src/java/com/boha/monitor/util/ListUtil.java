@@ -8,6 +8,8 @@ package com.boha.monitor.util;
 import com.boha.monitor.data.Company;
 import com.boha.monitor.data.CompanyStaff;
 import com.boha.monitor.data.CompanyStaffType;
+import com.boha.monitor.data.ErrorStore;
+import com.boha.monitor.data.ErrorStoreAndroid;
 import com.boha.monitor.data.Project;
 import com.boha.monitor.data.ProjectDiaryRecord;
 import com.boha.monitor.data.ProjectSite;
@@ -19,6 +21,8 @@ import com.boha.monitor.data.TaskStatus;
 import com.boha.monitor.dto.CompanyDTO;
 import com.boha.monitor.dto.CompanyStaffDTO;
 import com.boha.monitor.dto.CompanyStaffTypeDTO;
+import com.boha.monitor.dto.ErrorStoreAndroidDTO;
+import com.boha.monitor.dto.ErrorStoreDTO;
 import com.boha.monitor.dto.ProjectDTO;
 import com.boha.monitor.dto.ProjectDiaryRecordDTO;
 import com.boha.monitor.dto.ProjectSiteDTO;
@@ -28,7 +32,11 @@ import com.boha.monitor.dto.ProjectSiteTaskStatusDTO;
 import com.boha.monitor.dto.ProjectStatusTypeDTO;
 import com.boha.monitor.dto.TaskStatusDTO;
 import com.boha.monitor.dto.transfer.ResponseDTO;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Objects;
 import java.util.logging.Level;
@@ -122,6 +130,63 @@ public class ListUtil {
         }
 
         return resp;
+    }
+
+    public ResponseDTO getAndroidErrorList(int day) throws DataException {
+        ResponseDTO resp = new ResponseDTO();
+
+        try {
+            Query q = em.createNamedQuery("ErrorStoreAndroid.findByPeriod", ErrorStoreAndroid.class);
+            q.setParameter("from", new Date(getSimpleDate(new Date(), day)));
+            q.setParameter("to", new Date(getSimpleDate(new Date(), 0)));
+            List<ErrorStoreAndroid> sList = q.getResultList();
+            for (ErrorStoreAndroid cs : sList) {
+                resp.getErrorStoreAndroidList().add(new ErrorStoreAndroidDTO(cs));
+            }
+            List<ErrorStoreDTO> list = getErrorStoreList(day);
+            resp.setErrorStoreList(list);
+
+            log.log(Level.OFF, "Error Store Android found: {0}", sList.size());
+
+        } catch (Exception e) {
+            log.log(Level.SEVERE, "Failed", e);
+            throw new DataException("Failed to get project status list\n" + getErrorString(e));
+        }
+
+        return resp;
+    }
+
+    public List<ErrorStoreDTO> getErrorStoreList(int day) throws DataException {
+        List<ErrorStoreDTO> resp = new ArrayList<>();
+        try {
+            Query q = em.createNamedQuery("ErrorStore.findByPeriod");
+            q.setParameter("startDate", new Date(getSimpleDate(new Date(), day)));
+            q.setParameter("endDate", new Date(getSimpleDate(new Date(), 0)));
+            List<ErrorStore> sList = q.getResultList();
+            for (ErrorStore cs : sList) {
+                resp.add(new ErrorStoreDTO(cs));
+            }
+            log.log(Level.OFF, "Error Store Android found: {0}", sList.size());
+
+        } catch (Exception e) {
+            log.log(Level.SEVERE, "Failed", e);
+            throw new DataException("Failed to get project status list\n" + getErrorString(e));
+        }
+
+        return resp;
+    }
+
+    public static long getSimpleDate(Date date, int day) {
+        Calendar cal = GregorianCalendar.getInstance();
+        cal.setTime(date);
+        cal.set(GregorianCalendar.HOUR_OF_DAY, 0);
+        cal.set(GregorianCalendar.MINUTE, 0);
+        cal.set(GregorianCalendar.SECOND, 0);
+        cal.set(GregorianCalendar.MILLISECOND, 0);
+        if (day > 0) {
+            cal.set(GregorianCalendar.DAY_OF_MONTH, cal.get(GregorianCalendar.DAY_OF_MONTH) - day);
+        }
+        return cal.getTimeInMillis();
     }
 
     public ResponseDTO getProjectData(Integer projectID) throws DataException {
@@ -236,13 +301,13 @@ public class ListUtil {
     public ResponseDTO getCompanyData(Integer companyID) throws DataException {
         ResponseDTO resp = new ResponseDTO();
         CompanyDTO c = new CompanyDTO(em.find(Company.class, companyID));
-        
+
         c.setCompanyStaffList(getCompanyStaff(companyID).getCompanyStaffList());
         c.setProjectStatusTypeList(getProjectStatusList().getProjectStatusTypeList());
-        c.setTaskStatusList(getTaskStatusList().getTaskStatusList()); 
+        c.setTaskStatusList(getTaskStatusList().getTaskStatusList());
         c.setProjectList(getProjectsByCompany(companyID));
         resp.setCompany(c);
-        
+
         return resp;
     }
 
@@ -291,7 +356,7 @@ public class ListUtil {
                     if (Objects.equals(st.getProjectSiteID(), dto.getProjectSiteID())) {
                         for (ProjectSiteTaskDTO pst : pstList) {
                             if (Objects.equals(pst.getProjectSiteID(), st.getProjectSiteID())) {
-                                for (ProjectSiteTaskStatusDTO x: pst.getProjectSiteTaskStatusList()) {
+                                for (ProjectSiteTaskStatusDTO x : pst.getProjectSiteTaskStatusList()) {
                                     if (Objects.equals(x.getProjectSiteStaffID(), st.getProjectSiteStaffID())) {
                                         st.getProjectSiteTaskStatusList().add(x);
                                         log.log(Level.INFO, "status loaded {0} {1}", new Object[]{x.getStaffName(), x.getTaskStatus().getTaskStatusName()});
@@ -299,8 +364,7 @@ public class ListUtil {
                                 }
                             }
                         }
-                        
-                        
+
                         dto.getProjectSiteStaffList().add(st);
                     }
                 }

@@ -41,7 +41,7 @@ public class ProjectSiteTaskDTO implements Serializable {
         Project p = a.getProjectSite().getProject();
         try {
             this.imageFileNameList = FileUtility.getImageFilesTask(p.getCompany().getCompanyID(),
-                    p.getProjectID(), a.getProjectSite().getProjectSiteID(), projectSiteTaskID);
+                   p.getProjectID(), a.getProjectSite().getProjectSiteID(), projectSiteTaskID);
         } catch (Exception ex) {
             Logger.getLogger(ProjectSiteTaskDTO.class.getName()).log(Level.SEVERE, null, ex);
         }

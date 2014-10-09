@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package com.boha.monitor.dto;
 
 import com.boha.monitor.data.CompanyStaffType;
@@ -15,6 +14,7 @@ import java.util.List;
  * @author aubreyM
  */
 public class CompanyStaffTypeDTO implements Serializable {
+
     private static final long serialVersionUID = 1L;
     private Integer companyStaffTypeID;
     private String companyStaffTypeName;
@@ -28,7 +28,6 @@ public class CompanyStaffTypeDTO implements Serializable {
         this.companyStaffTypeName = a.getCompanyStaffTypeName();
     }
 
-  
     public Integer getCompanyStaffTypeID() {
         return companyStaffTypeID;
     }
@@ -77,5 +76,5 @@ public class CompanyStaffTypeDTO implements Serializable {
     public String toString() {
         return "com.boha.monitor.data.CompanyStaffType[ companyStaffTypeID=" + companyStaffTypeID + " ]";
     }
-    
+
 }

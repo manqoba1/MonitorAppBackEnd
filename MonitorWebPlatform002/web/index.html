@@ -6,11 +6,67 @@ and open the template in the editor.
 -->
 <html>
     <head>
-        <title>Monitor Platform</title>
+        <title>TODO supply a title</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </head>
     <body>
-        <div><h1>Monitor Platform Version 0.1</h1></div>
+        <input id="name"/><button id="save" onclick="saveName()">Enter Jou Name</button>
+        <div id="holder">
+
+        </div>
+        <input id="message"/>
+        <button id="send" onclick="sendText()">SEND</button>
+        <script type="text/javascript">
+            //var wsUri = "ws://" + document.location.host + document.location.pathname + "chat";
+            var wsUri = "ws://10.50.75.71:8080/mwp/wscompany";
+            console.log("PATH: " + wsUri);
+            var websocket = new WebSocket(wsUri);
+
+            websocket.onerror = function(evt) {
+                writeToScreen('<span style="color: red;">ERROR:</span> ' + evt.data);
+            };
+            websocket.onopen = function(evt) {
+                console.log("Connected to: " + wsUri);
+                
+            };
+            websocket.onmessage = function(evt) {
+                //console.log("Message received: " + JSON.stringify(evt));
+                console.log("Message received: " + evt.data);
+                var json = JSON.parse(evt.data);
+                console.log(json.countries);
+                //console.log(json.name);
+                //console.log(json.message);
+                //holder.innerHTML += "<label>" + json.name + ": </label><br><label>" + json.message + "</label><br><br>";
+                //alert(evt);
+            };
+            function saveName() {
+                var name = document.getElementById("name").value;
+                javascript:void(document.getElementById("name").value='');
+                var session = window.sessionStorage;
+                session.setItem("name", name);
+            }
+            function sendText() {
+                //var name = document.getElementById("name");
+                var session = window.sessionStorage;
+                var name = session.getItem("name");
+                if (name != "" || name != null) {
+                    var message = document.getElementById("message").value;
+                    javascript:void(document.getElementById("message").value='');
+                    /*var json = JSON.stringify({
+                        "name": name,
+                        "message": message
+                    });*/
+                    var json = JSON.stringify({                        
+                            requestType:109,
+                            day:6
+                    });
+                    console.log("sending text: " + json);
+                    websocket.send(json);
+                } else {
+                    alert("Please enter your name...");
+                }
+            }
+        </script>
     </body>
 </html>

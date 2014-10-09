@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package com.boha.monitor.dto.transfer;
 
 import com.boha.monitor.dto.CompanyDTO;
@@ -19,6 +18,7 @@ import com.boha.monitor.dto.ProjectSiteTaskDTO;
 import com.boha.monitor.dto.ProjectSiteTaskStatusDTO;
 import com.boha.monitor.dto.ProjectStatusTypeDTO;
 import com.boha.monitor.dto.TaskStatusDTO;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,10 +26,18 @@ import java.util.List;
  *
  * @author aubreyM
  */
-public class ResponseDTO {
-   
+public class ResponseDTO implements Serializable{
+
     private Integer statusCode;
     private String message, sessionID, GCMRegistrationID;
+
+    //erros
+    public static final int OK = 0;
+    public static final int SERVER_ERROR = 404;
+    public static final int DATABASE_ERROR = 403;
+    public static final int DATA_NOT_FOUND = 401;
+    public static final int UNKNOWN_REQUEST = 400;
+    
     List<String> taskImageFileNameList;
     List<String> siteImageFileNameList;
     List<TaskStatusDTO> taskStatusList = new ArrayList<>();
@@ -111,7 +119,6 @@ public class ResponseDTO {
         this.errorStoreAndroidList = errorStoreAndroidList;
     }
 
-    
     public List<TaskStatusDTO> getTaskStatusList() {
         return taskStatusList;
     }
@@ -199,6 +206,5 @@ public class ResponseDTO {
     public void setCompany(CompanyDTO company) {
         this.company = company;
     }
-    
-    
+
 }

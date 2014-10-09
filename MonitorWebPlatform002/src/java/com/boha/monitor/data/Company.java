@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package com.boha.monitor.data;
 
 import java.io.Serializable;
@@ -28,13 +27,14 @@ import javax.validation.constraints.Size;
 @Entity
 @Table(name = "company")
 @NamedQueries({
-    @NamedQuery(name = "Company.findAll", 
+    @NamedQuery(name = "Company.findAll",
             query = "SELECT c FROM Company c"),
-    @NamedQuery(name = "Company.findByCompanyID", 
+    @NamedQuery(name = "Company.findByCompanyID",
             query = "SELECT c FROM Company c WHERE c.companyID = :companyID"),
-    @NamedQuery(name = "Company.findByCompanyName", 
+    @NamedQuery(name = "Company.findByCompanyName",
             query = "SELECT c FROM Company c WHERE c.companyName = :companyName")})
 public class Company implements Serializable {
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "company")
     private List<Executive> executiveList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "company")
@@ -52,7 +52,7 @@ public class Company implements Serializable {
     private String companyName;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "company")
     private List<Project> projectList;
-    
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "company")
     private List<CompanyStaff> companyStaffList;
 
@@ -86,8 +86,6 @@ public class Company implements Serializable {
     public void setProjectList(List<Project> projectList) {
         this.projectList = projectList;
     }
-
-   
 
     public List<CompanyStaff> getCompanyStaffList() {
         return companyStaffList;
@@ -145,5 +143,7 @@ public class Company implements Serializable {
     public void setExecutiveList(List<Executive> executiveList) {
         this.executiveList = executiveList;
     }
+
     
+
 }

@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package com.boha.monitor.util;
 
 import com.boha.monitor.dto.transfer.RequestDTO;
@@ -14,10 +13,10 @@ import com.boha.monitor.dto.transfer.ResponseDTO;
  * @author aubreyM
  */
 public class TrafficCop {
-    
-    public static ResponseDTO processRequest(RequestDTO req, DataUtil dataUtil, ListUtil listUtil)throws DataException {
+
+    public static ResponseDTO processRequest(RequestDTO req, DataUtil dataUtil, ListUtil listUtil) throws DataException {
         ResponseDTO r = new ResponseDTO();
-        switch(req.getRequestType()) {
+        switch (req.getRequestType()) {
             case RequestDTO.REGISTER_COMPANY:
                 r = dataUtil.registerCompany(req.getCompany(), req.getCompanyStaff());
                 break;
@@ -61,12 +60,15 @@ public class TrafficCop {
             case RequestDTO.GET_TASK_STATUS_LIST:
                 r = listUtil.getTaskStatusList();
                 break;
+            case RequestDTO.GET_ANDROID_ERROR_DATA:
+                r = listUtil.getAndroidErrorList(req.getDay());
+                break;
             case RequestDTO.LOGIN:
-                r = dataUtil.login(req.getGcmDevice(), 
-                        req.getEmail(), req.getPin(), 
+                r = dataUtil.login(req.getGcmDevice(),
+                        req.getEmail(), req.getPin(),
                         req.getLoginType(), listUtil);
                 break;
-        }   
+        }
         if (r.getStatusCode() == null) {
             r.setStatusCode(0);
         }

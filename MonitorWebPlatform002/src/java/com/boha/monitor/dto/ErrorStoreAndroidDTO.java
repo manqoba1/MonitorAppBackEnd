@@ -6,15 +6,15 @@
 package com.boha.monitor.dto;
 
 import com.boha.monitor.data.ErrorStoreAndroid;
-
-
+import java.io.Serializable;
 
 /**
  *
  * @author aubreyM
  */
-public class ErrorStoreAndroidDTO {
+public class ErrorStoreAndroidDTO implements Serializable {
 
+    private static final long serialVersionUID = 1L;
     private int errorStoreAndroidID, companyID;
     private String companyName, logCat, stackTrace, androidVersion,
             brand, appVersionCode, appVersionName, packageName, phoneModel;
