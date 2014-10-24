@@ -23,7 +23,7 @@ import java.io.Serializable;
  */
 public class RequestDTO implements Serializable {
 
-    private Integer requestType, companyID, companyStaffID, projectID,
+    private Integer requestType, companyID, projectSiteStaffID, projectID,
             projectSiteID, loginType;
     private int day;
     private String email, pin;
@@ -61,7 +61,8 @@ public class RequestDTO implements Serializable {
             GET_TASK_STATUS_LIST = 106,
             GET_COMPANY_STAFF_TYPE_LIST = 107,
             GET_COMPANY_DATA = 108,
-            GET_ANDROID_ERROR_DATA = 109;
+            GET_ANDROID_ERROR_DATA = 109,
+            GET_STAFF_IMAGE_FILENAMES = 110;
     //login's 
     public static final int LOGIN = 200,
             LOGIN_OFFICE_ADMIN = 201,
@@ -70,6 +71,7 @@ public class RequestDTO implements Serializable {
 
     public static final String COMPANY_DIR = "company";
     public static final String PROJECT_DIR = "project";
+    public static final String SITE_STAFF_DIR = "sitestaff";
     public static final String PROJECT_SITE_DIR = "projectsite";
     public static final String TASK_DIR = "task";
 
@@ -130,12 +132,12 @@ public class RequestDTO implements Serializable {
         this.companyID = companyID;
     }
 
-    public Integer getCompanyStaffID() {
-        return companyStaffID;
+    public Integer getProjectSiteStaffID() {
+        return projectSiteStaffID;
     }
 
-    public void setCompanyStaffID(Integer companyStaffID) {
-        this.companyStaffID = companyStaffID;
+    public void setProjectSiteStaffID(Integer projectSiteStaffID) {
+        this.projectSiteStaffID = projectSiteStaffID;
     }
 
     public Integer getProjectID() {

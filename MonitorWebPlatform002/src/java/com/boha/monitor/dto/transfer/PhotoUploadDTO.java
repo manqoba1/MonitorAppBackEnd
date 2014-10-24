@@ -13,8 +13,8 @@ import java.util.List;
  */
 public class PhotoUploadDTO {
 
-    public static final int SITE_IMAGE = 1, TASK_IMAGE = 2;
-    private int companyID, projectID, projectSiteID, projectSiteTaskID, pictureType;
+    public static final int SITE_IMAGE = 1, TASK_IMAGE = 2, SITE_STAFF_IMAGE=3;
+    private int companyID, projectSiteStaffID, projectID, projectSiteID, projectSiteTaskID, pictureType;
     private List<String> tags;
 
     public int getPictureType() {
@@ -32,6 +32,16 @@ public class PhotoUploadDTO {
     public void setCompanyID(int companyID) {
         this.companyID = companyID;
     }
+
+    public int getProjectSiteStaffID() {
+        return projectSiteStaffID;
+    }
+
+    public void setProjectSiteStaffID(int projectSiteStaffID) {
+        this.projectSiteStaffID = projectSiteStaffID;
+    }
+
+    
 
     public int getProjectID() {
         return projectID;

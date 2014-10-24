@@ -80,7 +80,7 @@ public class CrashReportServlet extends HttpServlet {
                 e.setCompany(gg);
             }
         } catch (Exception ex) {
-            log.log(Level.OFF, "no custom data found");
+            log.log(Level.OFF, "no custom data found",ex);
         }
 
         dataUtil.addAndroidError(e);
